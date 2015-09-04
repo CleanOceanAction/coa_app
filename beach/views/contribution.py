@@ -70,17 +70,16 @@ def get_sites():
     """
     Get all the possible possible inputs for pull down
     """
-    query = "SELECT site_id, CONCAT(town, ', ', name) AS site_name FROM coa_data.sites ORDER BY town, name;"
+    query = "SELECT site_id, CONCAT(town, ', ', site_name) AS site_name FROM coa.site ORDER BY town, site_name;"
     df = db.fetch_data(query)
     return [['', '']] + df.values.tolist()
 
 
 def get_tls():
     query = """
-    SELECT DISTINCT(group_captain)
-    FROM coa_data.teams
-    WHERE group_captain IS NOT NULL
-    ORDER BY group_captain;
+    SELECT captain_name as group_captain
+    FROM coa.team
+    ORDER BY captain_name;
     """
     df = db.fetch_data(query)
     return df.to_json()
@@ -88,7 +87,7 @@ def get_tls():
 
 
 def get_trash_items():
-    query = "SELECT material, category FROM coa_data.taxonomy_mappings;"
+    query = "SELECT material, category FROM coa.item;"
     df = db.fetch_data(query)
     trash_items = {'': ''}
     trash_items.update({k: sorted(list(set(g["category"].tolist()))) for k, g in df.groupby("material")})
