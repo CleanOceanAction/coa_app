@@ -6,7 +6,6 @@ Created on 5/27/2015
 @author: iitoku2
 '''
 
-import pandas as pd
 import pymysql
 from beach import application
 
@@ -19,8 +18,12 @@ def fetch_data(query):
                            db=application.config['DB_DATABASE'],
                            charset='utf8',
                            use_unicode='true')
-    return pd.read_sql(query, conn)
 
+    cur = conn.cursor()
+    cur.execute(query)
+    data = cur.fetchall()
+    cur.close()
+    return data
 
 def insert(df, table):
     pass

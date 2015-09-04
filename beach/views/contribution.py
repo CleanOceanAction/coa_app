@@ -10,7 +10,6 @@ sends query from SQL and returns data to display
 '''
 
 from flask import Blueprint, render_template, request, Response, redirect, url_for, send_from_directory
-import pandas as pd
 import csv
 from beach import db
 
@@ -71,8 +70,8 @@ def get_sites():
     Get all the possible possible inputs for pull down
     """
     query = "SELECT site_id, CONCAT(town, ', ', site_name) AS site_name FROM coa.site ORDER BY town, site_name;"
-    df = db.fetch_data(query)
-    return [['', '']] + df.values.tolist()
+    sites = db.fetch_data(query)
+    return [['', '']] + [list(site) for site in sites]
 
 
 def get_tls():
@@ -81,16 +80,29 @@ def get_tls():
     FROM coa.team
     ORDER BY captain_name;
     """
-    df = db.fetch_data(query)
-    return df.to_json()
-    # return [''] + df.group_captain.tolist()
+    tls = db.fetch_data(query)
+    return [tl for tl in tls]
 
 
 def get_trash_items():
     query = "SELECT material, category FROM coa.item;"
-    df = db.fetch_data(query)
+    items = db.fetch_data(query)
+
     trash_items = {'': ''}
-    trash_items.update({k: sorted(list(set(g["category"].tolist()))) for k, g in df.groupby("material")})
+    for item in items:
+        parent, child = item
+        if parent in trash_items:
+            trash_items[parent].append(child)
+
+            trash_items[parent] = sorted(trash_items[parent])
+
+        else:
+            trash_items[parent]=[child]
+
+
+    #
+    # trash_items = {'': ''}
+    # trash_items.update({k: sorted(list(set(g["category"].tolist()))) for k, g in df.groupby("material")})
     return trash_items
 
 
@@ -106,8 +118,8 @@ def db_userinputs(imd):
 
     print data
 
-    df = pd.DataFrame(data, columns=cols)
-    db.insert(df, table)
+    # df = pd.DataFrame(data, columns=cols)
+    # db.insert(df, table)
 
 
 if __name__ == '__main__':
