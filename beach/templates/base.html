@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="COA Web App">
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="/static/bootstrap-3.3.4/css/bootstrap.min.css">
+	<script src="/static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+	<link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
+
+	<!-- DataTables -->
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+	
+	<!-- DatePicker -->
+	<link rel="stylesheet" href="/static/datepicker/css/datepicker.css">
+    <script src="../static/datepicker/js/bootstrap-datepicker.js"></script>
+
+	<!-- bootstrap-select -->
+	<link rel="stylesheet" href="/static/bootstrap-select/css/bootstrap-select.css">
+    <script src="/static/bootstrap-select/js/bootstrap-select.js"></script>
+
+	<script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script src="../static/d3/liquidFillGauge.js" language="JavaScript"></script>
+    <style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+    </style>
+
+    <!-- highcharts -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/data.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+
+</head>
+
+
+<script>
+	$(document).ready( function () {
+	    $('#data_table').DataTable();
+	} );
+</script>
+
+
+<body class = "body">
+
+	<div class = "navbar navbar-inverse">
+		<div class="navbar-header">
+	         <a class="navbar-brand" href="http://www.cleanoceanaction.org/" target="_blank">Clean Ocean Action</a>
+	       </div>
+		<div>
+        <table>
+			<ul class="nav navbar-nav" >
+			
+			{% set navigation_bar = 
+				[
+				    ('/contribution',    'contribution',    'Your Contribution'),
+                    ('/impact',                   'impact',        'Our Impact')
+				]
+			%}
+			
+			{% for href, id, caption in navigation_bar %}
+				<li{% if id == active_page %} class="active" {% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+			{% endfor %}
+
+
+
+
+			</ul>
+
+        </table>
+	    </div>
+	</div>
+
+	<!--h2>Base Body!!!!</h2-->
+	<div class="container-fluid">
+
+		<h3>{{ title }}</h3>
+
+		<!-- child template -->
+		{% block content %}{% endblock %}
+		
+		<!-- errors -->
+		{% if error %}
+		  <p class="error"><strong>Error:</strong> {{ error }}</p>
+		{% endif %}
+		
+		<!-- messages -->
+		{% for message in get_flashed_messages() %}
+		  {{ message }}
+		{% endfor %}
+	
+	</div><!-- /.container -->
+	
+</body>
+
+</html>

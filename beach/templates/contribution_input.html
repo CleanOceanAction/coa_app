@@ -1,0 +1,279 @@
+{% extends "index.html" %}
+{% block content %}
+<br>
+
+
+<div class="col-xs-6">
+    <div class="form-group">
+
+            <!-- Site -->
+            <label for="name">1. Site Information</label>
+            <p>Select your site</p>
+            <select id="site" name="sites" class="form-control form-control-inline">
+                {% for site_key, site_name in sites %}
+                    <option value="{{ site_name }}" id="{{ site_key }}">{{ site_name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+
+            <!-- TLs -->
+            <label for="name">2. Team Leader</label>
+            <p>Select your team leader</p>
+            <input type="text" class="form-control" id="tl" placeholder="Team Leader">
+            <br>
+
+            <!-- Date -->
+            <label for="name">3. Volunteer Date</label>
+            <p>Please indicate your volunteer date</p>
+            <input type="text" class="form-control dp" id="date" placeholder="MM/DD/YYYY" id="start_date">
+            <br>
+
+            <!-- Trash -->
+            <label for="name">4. Trash Info</label>
+            <div class="well well-sm">
+                <p>Please indicate the trash category</p>
+                <select id="parent" name="parent" class="form-control form-control-inline" onchange='selectChild()'>
+                    {% for parent in trash_items %}
+                        <option label="{{ parent }}" value="{{ "|".join(trash_items[parent]) }}">{{ parent }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+
+                <p>Please indicate the trash item</p>
+                <select id="child" name="child" class="form-control form-control-inline">
+                </select>
+                <br>
+
+                <p>Quantity</p>
+                <input type="number" min="1" step="1" class="form-control" name='qty' id="qty" placeholder="Quantity" required data-val="true"/>
+                <b><span id="errmsg" class="text-danger"></span></b>
+
+                <br>
+                <p>Please identify the brand name if possible</p>
+                <input type="text" class="form-control" id="brand" placeholder="Brand (Optional)">
+                <br>
+                <button type="add" name="add" class="btn btn-default btn-sm" onclick="addTable()">Add</button>
+            </div>
+    </div>
+</div>
+
+<div class="col-xs-6">
+    <label for="name">Your Impact</label>
+    <br>
+
+    <table id="trash_table" class="table table-condensed display">
+
+        <thead>
+            <tr>
+                <th>Trash</th>
+                <th>Quantity</th>
+                <th>Brand</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tbody>
+
+    </table>
+</div>
+
+
+
+<div class="col-xs-12" align="center">
+<br>
+    <hr>
+    <button type="submit" id="submit" class="btn btn-primary" onclick="submit()">Submit</button>
+    <button type="reset" value="Reset" class="btn btn-danger" onclick="reset()">Reset</button>
+    <br><br><br><br><br>
+</div>
+
+
+<script type="text/javascript">
+    var lines="";
+
+	$(document).ready(function () {
+	    $('#date').datepicker({
+	        format: "mm/dd/yyyy"
+	    });
+	    $('.dp').on('change', function () {
+	        $('.datepicker').hide();
+	    });
+
+        $("#qty").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#errmsg").html("Only numbers are allowed").show().fadeOut(3000);
+                    return false;
+            }
+        });
+	});
+
+    function selectChild() {
+        var p = document.getElementById("parent");
+        var c = document.getElementById("child");
+        var childList = p.options[p.selectedIndex].value.split("|");
+
+        while (c.options.length != 0) {
+            c.options.remove(c.options.length - 1);
+        }
+
+        for (child in childList) {
+            var option = document.createElement("option");
+            option.text = childList[child];
+            c.add(option);
+        }
+    };
+
+    var cnt=0;
+    function addTable(){
+        cnt=cnt+1;
+        var c = document.getElementById("child");
+        var trash = c.options[c.selectedIndex].label;
+
+        var q = document.getElementById("qty");
+        var qty = q.value;
+
+        var b = document.getElementById("brand");
+        var brand = b.value;
+
+        var table = document.getElementById("trash_table");
+        var row = table.insertRow(table.rows.length);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = trash;
+        cell2.innerHTML = qty;
+        cell3.innerHTML = brand;
+        cell4.innerHTML = "<label id='"+cnt+"' onclick='removeRow(this)'>x</label>";
+    }
+
+    function removeRow(l) {
+         var table = document.getElementById("trash_table");
+         var rowCount = table.rows.length;
+         for (var i = 1; i < rowCount; i++) {
+                 var row = table.rows[i];
+                 var rowObj = row.cells[3].childNodes[0];
+                 if (rowObj.id == l.id) {
+                     table.deleteRow(i);
+                     rowCount--;
+                 }
+             }
+    }
+    function submit(){
+        var s = document.getElementById("site");
+        var site = s.options[s.selectedIndex].id;
+
+        var t = document.getElementById("tl");
+        var tl = t.value;
+
+        var d = document.getElementById("date");
+        var date = d.value;
+
+        var table = document.getElementById("trash_table");
+
+        for (var i = 1, row; row = table.rows[i]; i++) {
+            var line="'"+site+"',"+tl+"',"+date
+            line=line+",'"+row.cells[0].textContent+"',"+row.cells[1].textContent+",'"+row.cells[2].textContent+"'";
+            lines=lines+"||"+line;
+        }
+    }
+
+    $(document).ready(function(){
+        $("#submit").click(function(){
+            $.ajax({url: "http://localhost:8080/updatedb",
+                type: "POST",
+                data: lines,
+                success: window.location.replace("/thank_you")
+                });
+        });
+    });
+
+    function reset(){
+        window.location.replace("/contribution");
+    }
+
+    $(function() {
+        var availableTags = [
+            "Adriana Zito-Livingston",
+            "Amanda Weeler",
+            "Angelo and Andrea",
+            "Anita Zalom",
+            "Ann Abate",
+            "Ann Comarato",
+            "Beth Kwart",
+            "Bill Cleary",
+            "Bill Schultz",
+            "Bob Thibault",
+            "Brenda Connolly",
+            "Britta Wengel",
+            "Carol Hart",
+            "Carol Spratford",
+            "Cash Woldseth",
+            "Charlie Hesse",
+            "Charlotte Moyer",
+            "Chris Huch",
+            "Dan McLaughlin",
+            "Danni Lague",
+            "Denni Logue",
+            "Diane Prendimano",
+            "Emily Long",
+            "Eric Gehring",
+            "Fran Donnelly",
+            "Frank Adler",
+            "Frank Huza",
+            "Frank Santarpia",
+            "Franz Adler",
+            "Getchen Whitman",
+            "Jeff Martin",
+            "Jessica",
+            "Jill McGrath",
+            "Joe Mairo",
+            "Joe Martin",
+            "Joe Reynolds",
+            "John Bonino",
+            "John Giova",
+            "Josh Peterson",
+            "Justine Ferretti",
+            "Kathryn Sellers",
+            "Krissy Halkers",
+            "Krissy Halkes",
+            "Laura Bagwell",
+            "Leah Savia",
+            "Lisa Cordova",
+            "Margot Fernicola",
+            "Marianne Grant",
+            "Marilyn Scholoshbach",
+            "Marissa Magura",
+            "Mark Palmieri",
+            "Mark Woldseth",
+            "Matt Schmidt",
+            "Matt Schmidtt",
+            "Michael Rohal",
+            "Mike Palmisano",
+            "Moses Katkowski",
+            "Mrs. Landers",
+            "P J Polinski",
+            "Patricia Doyle",
+            "Peter Donnelly",
+            "Peterson Family",
+            "Richard Steadman",
+            "Rob Van De Pette",
+            "Ronnie Dente",
+            "Sandy Parchetti",
+            "Sarah Maldonado",
+            "Steve Shearer",
+            "Tavia Dance",
+            "Tracy Volbrecht",
+            "Zach McCue"
+        ];
+        $( "#tl" ).autocomplete({
+          source: availableTags
+        });
+      });
+
+</script>
+ 
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+{{header | safe}}
+
+{% for p in paragraph %}
+   <p>{{ p }}</p>
+{% endfor %}
+
+{% if pageType == 'about' %}
+	<p>Contact box is here<p>
+{% endif %}
+
+{{data | safe}}
+
+
+{% endblock %}

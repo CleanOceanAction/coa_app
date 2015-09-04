@@ -1,0 +1,507 @@
+{% extends "index.html" %}
+{% block content %}
+<br>
+
+<div class="jumbotron"><h3 align="center">Q: What's the trend of debris being collected?  </h3></div>
+<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<div class="jumbotron">
+<h3 align="center">Q: What debris have been collected by Clean Ocean Action Beach Sweep?</h3></div>
+<div id="container1" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+
+<div class="jumbotron"><h3 align="center">Q: Which beaches need our help? </h3></div>
+<div id="container2" style="min-width: 310px; max-width: 1000px; height: 600px; margin: 0 auto"></div>
+
+<pre id="tsv" style="display:none">
+CLOTH--Blankets/Sheets/Towels	0.170%
+CLOTH--Clothing:  Specify	0.268%
+CLOTH--Other Cloth:  Specify	0.459%
+CLOTH--Shoes/Sandals	0.251%
+CLOTH--String (No Balloon)	0.377%
+FOAM PLASTIC--Building Materials (specify)	1.183%
+FOAM PLASTIC--Buoys/Floats	0.068%
+FOAM PLASTIC--Fast Food Containers	0.299%
+FOAM PLASTIC--Foam Cups	0.984%
+FOAM PLASTIC--Foam Pieces	5.763%
+FOAM PLASTIC--Foam Plates	0.316%
+FOAM PLASTIC--Other Foam Plastic (specify)	0.844%
+FOAM PLASTIC--Packaging Materials	0.582%
+GLASS--Beverage Bottles	2.066%
+GLASS--Glass Pieces	2.519%
+GLASS--Lights: Bulbs	0.030%
+GLASS--Lights: Fluorescent Tubes	0.010%
+GLASS--Other Bottles/Jars	0.224%
+GLASS--Other Glass (specify)	0.578%
+GLASS--Pieces	0.449%
+METAL--55 Gallon Drums:  New	0.005%
+METAL--55 Gallon Drums:  Old	0.005%
+METAL--Aerosol Cans	0.120%
+METAL--Appliances:  Specify	0.039%
+METAL--Batteries:  Car	0.014%
+METAL--Batteries:  Other	0.030%
+METAL--Beverages Cans	1.732%
+METAL--Bottles Caps	1.116%
+METAL--Car Parts	0.054%
+METAL--Crab/Fish Traps	0.027%
+METAL--Fishing:  Hooks	0.034%
+METAL--Fishing:  Sinkers	0.015%
+METAL--Foil	0.286%
+METAL--Metal Pieces	0.572%
+METAL--Nails	1.248%
+METAL--Other Cans	0.125%
+METAL--Other Metal:  Specify	0.410%
+METAL--Pull/Pop Tabs	0.104%
+METAL--Wire	0.637%
+PAPER--Cardboard	0.410%
+PAPER--Cartons/Boxes	0.159%
+PAPER--Cups	0.549%
+PAPER--Newspaper/Magazines	0.209%
+PAPER--Other Paper:  Specify	0.226%
+PAPER--Paper Bags	0.367%
+PAPER--Paper Pieces	1.069%
+PAPER--Plates	0.091%
+PLASTIC--6-Pack Holders	0.093%
+PLASTIC--Bait Bags/Containers	0.166%
+PLASTIC--Beverages/Soda Bottles	3.589%
+PLASTIC--Bleach/Cleaner Bottles	0.246%
+PLASTIC--Buckets/Crates/Bins	0.240%
+PLASTIC--Cap/Lids	10.363%
+PLASTIC--Cap/Rings	0.993%
+PLASTIC--Cigar Tips	1.377%
+PLASTIC--Cups	1.038%
+PLASTIC--Diapers	0.073%
+PLASTIC--Filters	9.013%
+PLASTIC--Food, Candy Wrappers/Bags	10.489%
+PLASTIC--Forks, Knives, Spoons	1.240%
+PLASTIC--Light Sticks	0.204%
+PLASTIC--Lighters	0.341%
+PLASTIC--Line	0.520%
+PLASTIC--Lures,Floats	0.121%
+PLASTIC--Nets - Large	0.024%
+PLASTIC--Nets - Small	0.087%
+PLASTIC--Other Bags	1.382%
+PLASTIC--Other Bottles	0.729%
+PLASTIC--Other Plastics (specify)	1.044%
+PLASTIC--Packaging	0.529%
+PLASTIC--Pens	0.277%
+PLASTIC--Plastic Pieces	7.433%
+PLASTIC--Ribbon/Tape (no balloon)	0.640%
+PLASTIC--Rope	0.638%
+PLASTIC--Sheeting Tarps	0.102%
+PLASTIC--Shotgun Shells	0.206%
+PLASTIC--Store/Shopping Bags	2.872%
+PLASTIC--Strapping Bands	0.233%
+PLASTIC--Straws/Stirrers	5.966%
+PLASTIC--Syringes	0.084%
+PLASTIC--Tampon Applicators	0.808%
+PLASTIC--Toys	0.385%
+PLASTIC--Trash Bags	1.057%
+PLASTIC--Vegetable Sacks	0.029%
+RUBBER--Balloons - Mylar	0.338%
+RUBBER--Balloons - Rubber	0.213%
+RUBBER--Condoms	0.203%
+RUBBER--Gloves	0.209%
+RUBBER--Mylar With String/Ribbon	0.238%
+RUBBER--Other Rubber:  Specify	0.336%
+RUBBER--Rubber With String/Ribbon	0.160%
+RUBBER--Tires:  Part	0.127%
+RUBBER--Tires:  Whole	0.034%
+WOOD--Crab/Lobster Traps	0.035%
+WOOD--Crates/Baskets	0.020%
+WOOD--Ice Cream Spoon/Sticks	0.209%
+WOOD--Lumber Pieces	4.329%
+WOOD--Other Wood:  Specify	1.623%
+WOOD--Pallets	0.201%
+</pre>
+
+
+<div class="jumbotron"><h3 align="center">Q: How long does it take an item to degrade?</h3></div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <img src="/static/img/degrad.png" class="img-responsive">
+    </div>
+</div>
+
+
+<div class="jumbotron"><h3 align="center">Q: Did walking farther mean picking up more trash?</h3></div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <img src="/static/img/dist_trash.png" class="img-responsive">
+    </div>
+</div>
+
+<div class="jumbotron"><h3 align="center">Q: What are the types of trash most prominent in each county?</h3></div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <img src="/static/img/coa_radar.png" class="img-responsive">
+    </div>
+</div>
+
+<div class="jumbotron"><h3 align="center">Q: What was collected the most?</h3></div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <img src="/static/img/litter1.png" class="img-responsive">
+    </div>
+</div>
+
+<script>
+
+$(function () {
+
+    Highcharts.data({
+        csv: document.getElementById('tsv').innerHTML,
+        itemDelimiter: '\t',
+        parsed: function (columns) {
+
+            var brands = {},
+                brandsData = [],
+                versions = {},
+                drilldownSeries = [];
+
+            // Parse percentage strings
+            columns[1] = $.map(columns[1], function (value) {
+                if (value.indexOf('%') === value.length - 1) {
+                    value = parseFloat(value);
+                }
+                return value;
+            });
+
+            $.each(columns[0], function (i, name) {
+                var brand,
+                    version;
+
+                if (i > 0) {
+
+                    // Remove special edition notes
+                    version=name.split('--')[1]
+                    brand = name.split('--')[0];
+
+                    // Split into brand and version
+                    // version = name.match(/([0-9]+[\.0-9x]*)/);
+                    //if (version) {
+                    //    version = version[0];
+                    //}
+                    //brand = name.replace(version, '');
+
+                    // Create the main data
+                    if (!brands[brand]) {
+                        brands[brand] = columns[1][i];
+                    } else {
+                        brands[brand] += columns[1][i];
+                    }
+
+                    // Create the version data
+                    if (version !== null) {
+                        if (!versions[brand]) {
+                            versions[brand] = [];
+                        }
+                        versions[brand].push([ version, columns[1][i]]);
+                    }
+                }
+
+            });
+
+            $.each(brands, function (name, y) {
+                brandsData.push({
+                    name: name,
+                    y: y,
+                    drilldown: versions[name] ? name : null
+                });
+            });
+            $.each(versions, function (key, value) {
+                drilldownSeries.push({
+                    name: key,
+                    id: key,
+                    data: value
+                });
+            });
+
+            // Create the chart
+            $('#container1').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Browser Debris Categories in 2013'
+                },
+                subtitle: {
+                    text: 'Click the slices to view versions'
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}: {point.y:.1f}%'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                },
+
+                series: [{
+                    name: 'toplevel',
+                    colorByPoint: true,
+                    data: brandsData
+                }],
+                drilldown: {
+                    series: drilldownSeries
+                }
+            });
+        }
+    });
+});
+
+$(function () {
+    var categories = ['Atlantic,Forsythe',
+'Atlantic,Granville Ave',
+'Atlantic,Missouri Ave',
+'Cape May,30th St. Beach',
+'Cape May,Poplar Ave',
+'Essex,Tonys Brook',
+'Middlesex,South Amboy Fishing beach',
+'Monmouth,Red Bank',
+'Monmouth,Sandy Hook',
+'Monmouth,Union Beach',
+'Ocean,Jenkinsons',
+'Ocean,Love Ladies',
+'Ocean,Maryland Ave',
+'Ocean,Maxson Ave'
+    ];
+    $(document).ready(function () {
+        $('#container2').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'The amount of debris collected per volunteer on beach in 2013'
+            },
+            subtitle: {
+                text: 'Source: http://www.cleanoceanaction.org/'
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return (Math.abs(this.value));
+                    }
+                },
+                min: -200,
+                max: 200
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+                        'Number of debris items per volunteer: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
+
+            series: [{
+                name: 'total debris on spring',
+                data: [-932/100,
+-456/100,
+-5584/100,
+-880/100,
+-4506/100,
+-3687/100,
+-3034/100,
+-684/100,
+-23327/100,
+-3120/100,
+-7113/100,
+-876/100,
+-1499/100,
+-1257/100,
+]},
+{
+                name: 'total debris on fall',
+                data: [956/100,
+52/100,
+8485/100,
+700/100,
+2578/100,
+185/100,
+1210/100,
+364/100,
+26563/100,
+7578.5/100,
+3880/100,
+1252/100,
+777/100,
+1395/100
+]},
+{
+                name: 'debris per volunteer on spring',
+                data: [-23.3,
+-17.53846154,
+-69.8,
+-25.88235294,
+-39.1826087,
+-67.03636364,
+-112.3703704,
+-40.23529412,
+-20.82767857,
+-26.66666667,
+-60.27966102,
+-25.02857143,
+-17.43023256,
+-59.85714286]
+            },
+     {
+                name: 'debris per volunteer on fall',
+                data: [23.9,
+2,
+106.0625,
+20.58823529,
+22.4173913,
+3.363636364,
+44.81481481,
+21.41176471,
+23.71696429,
+64.77350427,
+32.88135593,
+35.77142857,
+9.034883721,
+66.42857143
+]
+            }
+            ]
+        });
+    });
+
+});
+
+
+$(function () {
+
+    var ranges = [
+          [1993,135919,135919],
+[1994,187381,187381],
+[1995,222823,222823],
+[1996,173477,173477],
+[1997,209110,209110],
+[1998,184954,184954],
+[1999,252427,252427],
+[2000,212293,212293],
+[2001,243475,243475],
+[2002,221742,221742],
+[2003,242714,242714],
+[2004,338423,338423],
+[2005,160831,160831],
+[2006,259053,259053],
+[2007,304342,304342],
+[2008,289976,289976],
+[2009,301564,301564],
+[2010,475321,475321],
+[2011,452698,452698],
+[2012,351781,351781],
+[2013,325163,325163],
+[2014,282309.6803,349012.5339],
+[2015,258947.6579,346215.1977],
+[2016,259866.6295,368004.2497],
+        ],
+        averages = [
+           [1993,135919],
+[1994,187381],
+[1995,222823],
+[1996,173477],
+[1997,209110],
+[1998,184954],
+[1999,252427],
+[2000,212293],
+[2001,243475],
+[2002,221742],
+[2003,242714],
+[2004,338423],
+[2005,160831],
+[2006,259053],
+[2007,304342],
+[2008,289976],
+[2009,301564],
+[2010,475321],
+[2011,452698],
+[2012,351781],
+[2013,325163],
+[2014,315661],
+[2015,302581],
+[2016,313935],
+        ];
+
+
+    $('#container3').highcharts({
+
+        title: {
+            text: 'Total Debris Items Collected since 1993'
+        },
+
+        xAxis: {
+            type: 'Source: http://www.cleanoceanaction.org/'
+        },
+
+        yAxis: {
+            title: {
+                text: null
+            }
+        },
+
+        tooltip: {
+            crosshairs: true,
+            //shared: true,
+            //valueSuffix: ' items'
+        },
+
+        legend: {
+        },
+
+        series: [{
+            name: 'Total debris items',
+            data: averages,
+            zIndex: 1,
+            marker: {
+                fillColor: 'white',
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[0]
+            }
+        }, {
+            name: 'Range',
+            data: ranges,
+            type: 'arearange',
+            lineWidth: 0,
+            linkedTo: ':previous',
+            color: Highcharts.getOptions().colors[0],
+            fillOpacity: 0.3,
+            zIndex: 0
+        }]
+    });
+});
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "index.html" %}
+{% block content %}
+<br>
+
+<div class="col-xs-12">
+    <div align="center" class="jumbotron">
+	    <h1>Thank you!</h1>
+        <p>We are closer to our 2015 goal of <b>302,581</b> units removed, <br/>see our progress below!</p>
+    </div>
+    <br>
+
+
+
+    <svg id="fillgauge1" width="97%" height="500"></svg>
+    <script language="JavaScript">
+        var config1 = liquidFillGaugeDefaultSettings();
+        config1.circleThickness = 0.1;
+        config1.circleFillGap = 0.1;
+        config1.textVertPosition = 0.8;
+        config1.waveAnimateTime = 2000;
+        config1.waveHeight = 0.3;
+        config1.waveCount = 1;
+        loadLiquidFillGauge("fillgauge1", 62, config1);
+    </script>
+
+</div>
+
+{% endblock %}
