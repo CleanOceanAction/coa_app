@@ -10,7 +10,7 @@ import os
 
 class Config(object):
     #Flask config
-    DEBUG = False
+    DEBUG = True
     TESTING = False
     PORT = 8080
 
