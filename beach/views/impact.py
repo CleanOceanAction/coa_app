@@ -10,7 +10,6 @@ sends query from SQL and returns data to display
 '''
 
 from flask import Blueprint, render_template, request, Response, redirect, url_for, send_from_directory
-import pandas as pd
 import csv
 from beach import db
 
