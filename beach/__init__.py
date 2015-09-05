@@ -8,12 +8,21 @@ Created on 5/27/2015
 Reads beach.config.py and
 loads config into dashboard object depends on web server
 '''
-from flask import Flask
 
-from beach.config import Config
+from flask import Flask
+import os
+
+from beach.config import DevConfig
+from beach.config import ProdConfig
+
 
 application = Flask(__name__)
-application.config.from_object(Config)
+
+if os.uname()[1] == 'R-n-D-MacBook-Pro.local':
+    application.config.from_object(DevConfig)
+else:
+    application.config.from_object(ProdConfig)
+
 
 from beach.views.contribution import cont
 from beach.views.impact import imp
