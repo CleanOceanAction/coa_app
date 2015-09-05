@@ -10,7 +10,6 @@ All the configs are in beach.config.py
 Bind to PORT if defined, otherwise default to 8080
 '''
 
-import os
 from beach import application
 
 if __name__ == '__main__':

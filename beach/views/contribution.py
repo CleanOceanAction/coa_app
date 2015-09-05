@@ -93,7 +93,6 @@ def get_trash_items():
         parent, child = item
         if parent in trash_items:
             trash_items[parent].append(child)
-
             trash_items[parent] = sorted(trash_items[parent])
 
         else:
