@@ -12,7 +12,7 @@ class Config(object):
     #Flask config
     DEBUG = True
     TESTING = False
-    PORT = 8080
+    PORT = 80
 
     #DB config
     DB_SERVER = os.environ['DB_SERVER']
