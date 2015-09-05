@@ -6,6 +6,7 @@ Created on 5/27/2015
 @author: iitoku2
 '''
 
+import os
 
 class Config(object):
     #Flask config
