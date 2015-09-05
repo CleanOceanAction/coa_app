@@ -19,6 +19,7 @@ def fetch_data(query):
                            charset='utf8',
                            use_unicode='true')
 
+
     cur = conn.cursor()
     cur.execute(query)
     data = cur.fetchall()

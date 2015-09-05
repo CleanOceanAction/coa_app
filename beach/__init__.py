@@ -9,18 +9,11 @@ Reads beach.config.py and
 loads config into dashboard object depends on web server
 '''
 from flask import Flask
-import socket
 
 from beach.config import Config
-from beach.config import DevConfig
-from beach.config import ProdConfig
 
 application = Flask(__name__)
-
-if socket.gethostname().lower() == Config.WEB_SERVER_PROD:
-    application.config.from_object(ProdConfig)
-else:
-    application.config.from_object(DevConfig)
+application.config.from_object(Config)
 
 from beach.views.contribution import cont
 from beach.views.impact import imp
