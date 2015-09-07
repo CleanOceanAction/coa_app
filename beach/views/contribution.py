@@ -71,7 +71,9 @@ def get_sites():
     """
     query = "SELECT site_id, CONCAT(town, ', ', site_name) AS site_name FROM coa.site ORDER BY town, site_name;"
     sites = db.fetch_data(query)
-    return [['', '']] + [list(site) for site in sites]
+    return [list(site) for site in sites]
+
+    # return [['', '']] + [list(site) for site in sites]
 
 
 def get_tls():

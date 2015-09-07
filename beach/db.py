@@ -11,13 +11,15 @@ from beach import application
 
 
 def fetch_data(query):
-    conn = pymysql.connect(host=application.config['DB_SERVER'],
-                           port=application.config['DB_PORT'],
-                           user=application.config['DB_USERNAME'],
-                           passwd=application.config['DB_PASSWORD'],
-                           db=application.config['DB_DATABASE'],
-                           charset='utf8',
-                           use_unicode='true')
+    conn = pymysql.connect(
+        host=application.config['DB_SERVER'],
+        port=application.config['DB_PORT'],
+        user=application.config['DB_USERNAME'],
+        passwd=application.config['DB_PASSWORD'],
+        db=application.config['DB_DATABASE'],
+        charset='utf8',
+        use_unicode='true'
+    )
 
     cur = conn.cursor()
     cur.execute(query)
