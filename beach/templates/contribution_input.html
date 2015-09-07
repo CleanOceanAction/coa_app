@@ -43,7 +43,6 @@
 
                 <p>Please indicate the trash item</p>
                 <select id="child" name="child" class="form-control form-control-inline">
-                    <option selected disabled>Please select an item</option>
                 </select>
                 <br>
 
@@ -200,77 +199,9 @@
 
     $(function() {
         var availableTags = [
-            "Adriana Zito-Livingston",
-            "Amanda Weeler",
-            "Angelo and Andrea",
-            "Anita Zalom",
-            "Ann Abate",
-            "Ann Comarato",
-            "Beth Kwart",
-            "Bill Cleary",
-            "Bill Schultz",
-            "Bob Thibault",
-            "Brenda Connolly",
-            "Britta Wengel",
-            "Carol Hart",
-            "Carol Spratford",
-            "Cash Woldseth",
-            "Charlie Hesse",
-            "Charlotte Moyer",
-            "Chris Huch",
-            "Dan McLaughlin",
-            "Danni Lague",
-            "Denni Logue",
-            "Diane Prendimano",
-            "Emily Long",
-            "Eric Gehring",
-            "Fran Donnelly",
-            "Frank Adler",
-            "Frank Huza",
-            "Frank Santarpia",
-            "Franz Adler",
-            "Getchen Whitman",
-            "Jeff Martin",
-            "Jessica",
-            "Jill McGrath",
-            "Joe Mairo",
-            "Joe Martin",
-            "Joe Reynolds",
-            "John Bonino",
-            "John Giova",
-            "Josh Peterson",
-            "Justine Ferretti",
-            "Kathryn Sellers",
-            "Krissy Halkers",
-            "Krissy Halkes",
-            "Laura Bagwell",
-            "Leah Savia",
-            "Lisa Cordova",
-            "Margot Fernicola",
-            "Marianne Grant",
-            "Marilyn Scholoshbach",
-            "Marissa Magura",
-            "Mark Palmieri",
-            "Mark Woldseth",
-            "Matt Schmidt",
-            "Matt Schmidtt",
-            "Michael Rohal",
-            "Mike Palmisano",
-            "Moses Katkowski",
-            "Mrs. Landers",
-            "P J Polinski",
-            "Patricia Doyle",
-            "Peter Donnelly",
-            "Peterson Family",
-            "Richard Steadman",
-            "Rob Van De Pette",
-            "Ronnie Dente",
-            "Sandy Parchetti",
-            "Sarah Maldonado",
-            "Steve Shearer",
-            "Tavia Dance",
-            "Tracy Volbrecht",
-            "Zach McCue"
+            {% for tl in tls %}
+                "{{ tl }}",
+            {% endfor %}
         ];
         $( "#tl" ).autocomplete({
           source: availableTags

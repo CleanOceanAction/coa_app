@@ -19,18 +19,17 @@ cont = Blueprint('contribution', __name__, template_folder='/../templates')
 
 @cont.route('/', methods=['GET', 'POST'])
 def collected_items():
-    import contribution
 
     if request.method == 'GET':
         title = "Please enter your contribution!"
-        sites = contribution.get_sites()
-        # tls = contribution.get_tls()
-        trash_items = contribution.get_trash_items()
+        sites = get_sites()
+        tls = get_tls()
+        trash_items = get_trash_items()
 
         return render_template("contribution_input.html",
                                title=title,
                                sites=sites,
-                               # tls=tls,
+                               tls=tls,
                                trash_items=trash_items,
                                active_page='contribution')
 
@@ -43,17 +42,14 @@ def collected_items():
 
 @cont.route('/ajax')
 def ajax():
-    import contribution
-    tls = contribution.get_tls()
+    tls = get_tls()
     return Response(tls)
 
 
 @cont.route('/updatedb', methods=['GET', 'POST'])
 def updatedb():
-    import contribution
-
     if request.method == 'POST':
-        contribution.db_userinputs(request.form)
+        db_userinputs(request.form)
         return ''
 
 
@@ -76,19 +72,28 @@ def get_sites():
 
 def get_tls():
     query = """
-    SELECT captain_name as group_captain
+    SELECT
+        captain_name
     FROM coa.team
     ORDER BY captain_name;
     """
-    tls = db.fetch_data(query)
+    tls = [tl[0] for tl in db.fetch_data(query)]
+
+    print tls
+
     return tls
 
 
 def get_trash_items():
-    query = "SELECT material, category FROM coa.item;"
-    items = db.fetch_data(query)
+    query = """
+    SELECT
+        DISTINCT material,
+        category
+    FROM coa.item;
+    """
+    items = db.fetch_data(query);
 
-    trash_items = {'': ''}
+    trash_items = {}
     for item in items:
         parent, child = item
         if parent in trash_items:
@@ -98,10 +103,6 @@ def get_trash_items():
         else:
             trash_items[parent]=[child]
 
-
-    #
-    # trash_items = {'': ''}
-    # trash_items.update({k: sorted(list(set(g["category"].tolist()))) for k, g in df.groupby("material")})
     return trash_items
 
 
@@ -119,7 +120,3 @@ def db_userinputs(imd):
 
     # df = pd.DataFrame(data, columns=cols)
     # db.insert(df, table)
-
-
-if __name__ == '__main__':
-    print get_tls()
