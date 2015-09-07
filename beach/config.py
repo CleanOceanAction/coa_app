@@ -17,8 +17,7 @@ class Config(object):
     DB_USERNAME = os.environ['DB_USERNAME']
     DB_PASSWORD = os.environ['DB_PASSWORD']
     DB_DATABASE = os.environ['DB_DATABASE']
-    # DB_PORT = os.environ['DB_PORT']
-    DB_PORT = 8080
+    DB_PORT = int(os.environ['DB_PORT'])
 
 
 class ProdConfig(Config):
