@@ -84,9 +84,6 @@ def get_tls():
     return tls
 
 
-    # return [tl for tl in tls]
-
-
 def get_trash_items():
     query = "SELECT material, category FROM coa.item;"
     items = db.fetch_data(query)
