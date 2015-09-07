@@ -73,8 +73,6 @@ def get_sites():
     sites = db.fetch_data(query)
     return sites
 
-    # return [list(site) for site in sites]
-
 
 def get_tls():
     query = """
@@ -83,7 +81,10 @@ def get_tls():
     ORDER BY captain_name;
     """
     tls = db.fetch_data(query)
-    return [tl for tl in tls]
+    return tls
+
+
+    # return [tl for tl in tls]
 
 
 def get_trash_items():
