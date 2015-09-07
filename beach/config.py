@@ -22,7 +22,7 @@ class Config(object):
 
 class ProdConfig(Config):
     PORT = 80
-    DEBUG = False
+    DEBUG = True
 
 
 class DevConfig(Config):
