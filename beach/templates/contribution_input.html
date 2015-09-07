@@ -10,7 +10,7 @@
             <label for="name">1. Site Information</label>
             <p>Select your site</p>
             <select id="site" name="sites" class="form-control form-control-inline">
-                <option selected disabled>Choose your site</option>
+                <option selected disabled>Please select your site</option>
                 {% for site_key, site_name in sites %}
                     <option value="{{ site_name }}" id="{{ site_key }}">{{ site_name }}</option>
                 {% endfor %}
@@ -34,6 +34,7 @@
             <div class="well well-sm">
                 <p>Please indicate the trash category</p>
                 <select id="parent" name="parent" class="form-control form-control-inline" onchange='selectChild()'>
+                    <option selected disabled>Please select a category</option>
                     {% for parent in trash_items %}
                         <option label="{{ parent }}" value="{{ "|".join(trash_items[parent]) }}">{{ parent }}</option>
                     {% endfor %}
