@@ -19,6 +19,8 @@ class Config(object):
     DB_DATABASE = os.environ['DB_DATABASE']
     DB_PORT = int(os.environ['DB_PORT'])
 
+
+
 class ProdConfig(Config):
     PORT = 80
     DEBUG = True

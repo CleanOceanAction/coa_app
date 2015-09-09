@@ -90,7 +90,7 @@ def get_trash_items():
   SELECT
         DISTINCT item_id,
         material,
-        concat(category,', ', ifnull(item_name,'') ) as category
+        concat(category,', ', ifnull(item_name,'') ,'[',item_id,']') as category
     FROM coa.item;
     """
     items = db.fetch_data(query);
@@ -99,7 +99,7 @@ def get_trash_items():
     for item in items:
         item_id, parent, child = item
         if parent in trash_items:
-            trash_items[parent].append("%s [%s]" % (child, item_id))
+            trash_items[parent].append(child)
             trash_items[parent] = sorted(trash_items[parent])
 
         else:
