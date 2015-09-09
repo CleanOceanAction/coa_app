@@ -20,8 +20,13 @@
             <!-- TLs -->
             <label for="name">2. Team Leader</label>
             <p>Select your team leader</p>
-            <input type="text" class="form-control" id="tl" placeholder="Team Leader">
-            <br>
+            <select id="tls" name="tls" class="form-control form-control-inline">
+                <option selected disabled>Please select your team leader</option>
+                {% for tl_key, tl_name in tls %}
+                    <option value="{{ tl_name }}" id="{{ tl_key }}">{{ tl_name }}</option>
+                {% endfor %}
+            </select>
+             <br>
 
             <!-- Date -->
             <label for="name">3. Volunteer Date</label>
@@ -133,6 +138,7 @@
         cnt=cnt+1;
         var c = document.getElementById("child");
         var trash = c.options[c.selectedIndex].label;
+        var trash_id = c.options[c.selectedIndex].id;
 
         var q = document.getElementById("qty");
         var qty = q.value;
@@ -146,7 +152,7 @@
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        cell1.innerHTML = trash;
+        cell1.innerHTML = "trash";
         cell2.innerHTML = qty;
         cell3.innerHTML = brand;
         cell4.innerHTML = "<label id='"+cnt+"' onclick='removeRow(this)'>x</label>";
@@ -168,8 +174,8 @@
         var s = document.getElementById("site");
         var site = s.options[s.selectedIndex].id;
 
-        var t = document.getElementById("tl");
-        var tl = t.value;
+        var t = document.getElementById("tls");
+        var tl = t.options[t.selectedIndex].id;
 
         var d = document.getElementById("date");
         var date = d.value;
@@ -185,10 +191,10 @@
 
     $(document).ready(function(){
         $("#submit").click(function(){
-            $.ajax({url: "http://localhost:8080/updatedb",
+            $.ajax({url: "http://localhost:8080/contribution/updatedb",
                 type: "POST",
                 data: lines,
-                success: window.location.replace("/thank_you")
+                //success: window.location.replace("/contribution/thank_you")
                 });
         });
     });
@@ -197,16 +203,6 @@
         window.location.replace("/contribution");
     }
 
-    $(function() {
-        var availableTags = [
-            {% for tl in tls %}
-                "{{ tl }}",
-            {% endfor %}
-        ];
-        $( "#tl" ).autocomplete({
-          source: availableTags
-        });
-      });
 
 </script>
  

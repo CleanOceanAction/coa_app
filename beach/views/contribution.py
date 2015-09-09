@@ -12,6 +12,7 @@ sends query from SQL and returns data to display
 from flask import Blueprint, render_template, request, Response, redirect, url_for, send_from_directory
 import csv
 from beach import db
+from datetime import datetime
 
 
 cont = Blueprint('contribution', __name__, template_folder='/../templates')
@@ -49,7 +50,9 @@ def ajax():
 @cont.route('/updatedb', methods=['GET', 'POST'])
 def updatedb():
     if request.method == 'POST':
-        db_userinputs(request.form)
+        query = create_query(request.form)
+        db.insert(query)
+
         return ''
 
 
@@ -73,31 +76,30 @@ def get_sites():
 def get_tls():
     query = """
     SELECT
+        team_id,
         captain_name
     FROM coa.team
     ORDER BY captain_name;
     """
-    tls = [tl[0] for tl in db.fetch_data(query)]
-
-    print tls
-
+    tls = [tl for tl in db.fetch_data(query)]
     return tls
 
 
 def get_trash_items():
     query = """
-    SELECT
-        DISTINCT material,
-        category
+  SELECT
+        DISTINCT item_id,
+        material,
+        concat(category,', ', ifnull(item_name,'') ) as category
     FROM coa.item;
     """
     items = db.fetch_data(query);
 
     trash_items = {}
     for item in items:
-        parent, child = item
+        item_id, parent, child = item
         if parent in trash_items:
-            trash_items[parent].append(child)
+            trash_items[parent].append("%s [%s]" % (child, item_id))
             trash_items[parent] = sorted(trash_items[parent])
 
         else:
@@ -106,17 +108,42 @@ def get_trash_items():
     return trash_items
 
 
-def db_userinputs(imd):
+def create_query(imd):
     table = 'coa_inputs'
     cols = ['site_id', 'group_captain', 'date', 'category', 'quantity', 'brand']
-    data = []
+    query = """
+    insert into volunteer_record
+    (site_id, team_id, volunteer_date, item_id, quantity, brand)
+    VALUES
+    """
+
+
+
+
 
     reader = csv.reader(imd.items()[0][0].split('||'), delimiter=',')
     for row in reader:
         if row:
-            data.append([item.strip("'") for item in row])
 
-    print data
+            print row[3]
 
-    # df = pd.DataFrame(data, columns=cols)
-    # db.insert(df, table)
+
+
+
+
+            query += "(%s,%s,%s,%s,%s,%s)," % (
+                row[0],
+                row[1],
+
+                datetime.strptime(row[2], '%m/%d/%Y').strftime("%Y-%m-%d"),
+
+
+                row[3].split('[')[1].split(']')[0],
+                row[4],
+                row[5]
+            )
+
+
+    print query
+    return query[-1:]
+

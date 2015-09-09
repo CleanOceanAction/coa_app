@@ -9,8 +9,7 @@ Created on 5/27/2015
 import pymysql
 from beach import application
 
-
-def fetch_data(query):
+def db_conn():
     conn = pymysql.connect(
         host=application.config['DB_SERVER'],
         port=application.config['DB_PORT'],
@@ -20,13 +19,22 @@ def fetch_data(query):
         charset='utf8',
         use_unicode='true'
     )
+    return conn
 
+def fetch_data(query):
+    conn=db_conn()
     cur = conn.cursor()
     cur.execute(query)
     data = cur.fetchall()
     cur.close()
+    conn.close()
     return data
 
 
-def insert(df, table):
-    pass
+def insert(query):
+    conn=db_conn()
+    cur = conn.cursor()
+    cur.execute(query)
+    cur.commit()
+    cur.close()
+    conn.close()
