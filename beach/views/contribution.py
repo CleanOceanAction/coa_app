@@ -51,7 +51,7 @@ def ajax():
 def updatedb():
     if request.method == 'POST':
         query = create_query(request.form)
-        db.insert(query)
+
 
         return ''
 
@@ -120,6 +120,7 @@ def create_query(imd):
     reader = csv.reader(imd.items()[0][0].split('||'), delimiter='#')
     for row in reader:
         if row:
+            #print row[3]
             query += "(%s,%s,'%s',%s,%s,'%s')," % (
                 row[0],
                 row[1],
@@ -130,6 +131,6 @@ def create_query(imd):
             )
 
 
-    print query[:-1]
-    return query[:-1]
+    print query[:-1] + ';'
+    return query[:-1] + ';'
 
