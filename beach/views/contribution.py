@@ -117,33 +117,19 @@ def create_query(imd):
     VALUES
     """
 
-
-
-
-
-    reader = csv.reader(imd.items()[0][0].split('||'), delimiter=',')
+    reader = csv.reader(imd.items()[0][0].split('||'), delimiter='#')
     for row in reader:
         if row:
-
-            print row[3]
-
-
-
-
-
-            query += "(%s,%s,%s,%s,%s,%s)," % (
+            query += "(%s,%s,'%s',%s,%s,'%s')," % (
                 row[0],
                 row[1],
-
                 datetime.strptime(row[2], '%m/%d/%Y').strftime("%Y-%m-%d"),
-
-
                 row[3].split('[')[1].split(']')[0],
                 row[4],
                 row[5]
             )
 
 
-    print query
-    return query[-1:]
+    print query[:-1]
+    return query[:-1]
 

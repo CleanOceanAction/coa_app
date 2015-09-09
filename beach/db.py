@@ -35,6 +35,6 @@ def insert(query):
     conn=db_conn()
     cur = conn.cursor()
     cur.execute(query)
-    cur.commit()
+    conn.commit()
     cur.close()
     conn.close()

@@ -138,7 +138,6 @@
         cnt=cnt+1;
         var c = document.getElementById("child");
         var trash = c.options[c.selectedIndex].label;
-        var trash_id = c.options[c.selectedIndex].id;
 
         var q = document.getElementById("qty");
         var qty = q.value;
@@ -152,7 +151,7 @@
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        cell1.innerHTML = "trash";
+        cell1.innerHTML = trash;
         cell2.innerHTML = qty;
         cell3.innerHTML = brand;
         cell4.innerHTML = "<label id='"+cnt+"' onclick='removeRow(this)'>x</label>";
@@ -183,8 +182,8 @@
         var table = document.getElementById("trash_table");
 
         for (var i = 1, row; row = table.rows[i]; i++) {
-            var line="'"+site+"',"+tl+"',"+date
-            line=line+",'"+row.cells[0].textContent+"',"+row.cells[1].textContent+",'"+row.cells[2].textContent+"'";
+            var line=""+site+"#"+tl+"#"+date
+            line=line+"#"+row.cells[0].textContent+"#"+row.cells[1].textContent+"#"+row.cells[2].textContent+"";
             lines=lines+"||"+line;
         }
     }
