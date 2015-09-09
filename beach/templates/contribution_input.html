@@ -190,7 +190,7 @@
 
     $(document).ready(function(){
         $("#submit").click(function(){
-            $.ajax({url: "http://localhost:8080/contribution/updatedb",
+            $.ajax({url: "/contribution/updatedb",
                 type: "POST",
                 data: lines,
                 success: window.location.replace("/contribution/thank_you")
