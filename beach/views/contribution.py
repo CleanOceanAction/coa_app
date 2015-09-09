@@ -51,8 +51,7 @@ def ajax():
 def updatedb():
     if request.method == 'POST':
         query = create_query(request.form)
-
-
+        db.insert(query)
         return ''
 
 
