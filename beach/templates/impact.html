@@ -286,7 +286,8 @@ $(function () {
                 reversed: false,
                 labels: {
                     step: 1
-                }
+                },title: {text: 'NJ beaches'}
+
             }, { // mirror axis on right side
                 opposite: true,
                 reversed: false,
@@ -295,6 +296,7 @@ $(function () {
                 labels: {
                     step: 1
                 }
+
             }],
             yAxis: {
                 title: {
@@ -306,7 +308,8 @@ $(function () {
                     }
                 },
                 min: -200,
-                max: 200
+                max: 200,
+                title: {text: 'debris in hundred bags'}
             },
 
             plotOptions: {
@@ -323,7 +326,7 @@ $(function () {
             },
 
             series: [{
-                name: 'total debris on spring',
+                name: 'total debris in spring',
                 data: [-932/100,
 -456/100,
 -5584/100,
@@ -340,7 +343,7 @@ $(function () {
 -1257/100,
 ]},
 {
-                name: 'total debris on fall',
+                name: 'total debris in fall',
                 data: [956/100,
 52/100,
 8485/100,
@@ -357,7 +360,7 @@ $(function () {
 1395/100
 ]},
 {
-                name: 'debris per volunteer on spring',
+                name: 'debris per volunteer in spring',
                 data: [-23.3,
 -17.53846154,
 -69.8,
@@ -374,7 +377,7 @@ $(function () {
 -59.85714286]
             },
      {
-                name: 'debris per volunteer on fall',
+                name: 'debris per volunteer in fall',
                 data: [23.9,
 2,
 106.0625,
@@ -462,12 +465,11 @@ $(function () {
 
         xAxis: {
             type: 'Source: http://www.cleanoceanaction.org/'
+            ,title: {text: 'Year'}
         },
 
         yAxis: {
-            title: {
-                text: null
-            }
+            title: {text: 'Number of items'}
         },
 
         tooltip: {
