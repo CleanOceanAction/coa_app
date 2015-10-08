@@ -46,6 +46,21 @@ def ajax():
     tls = get_tls()
     return Response(tls)
 
+@cont.route('/admin')
+def admin():
+    sites = get_sites()
+    tls = get_tls()
+    return render_template("admin.html",
+                            sites=sites,
+                            tls=tls)
+
+@cont.route('/addSite')
+def addSite():
+    if request.method == 'POST':
+        sitename=request.form.items()[0][0]
+        #query='insert into site'
+        #db.insert(query)
+        return ''
 
 @cont.route('/updatedb', methods=['GET', 'POST'])
 def updatedb():
@@ -109,28 +124,30 @@ def get_trash_items():
 
 def create_query(imd):
     table = 'coa_inputs'
-    cols = ['site_id', 'group_captain', 'date', 'category', 'quantity', 'brand']
+    cols = ['site_id', 'group_captain', 'date', 'category', 'quantity', 'brand','updated_by','event_code']
     query = """
     insert into volunteer_record
-    (site_id, team_id, volunteer_date, item_id, quantity, brand)
+    (site_id, team_id, volunteer_date, item_id, quantity, brand,updated_by,event_code)
     VALUES
     """
 
 
-    print 'start of create_query'
+    print query
 
 
     reader = csv.reader(imd.items()[0][0].split('||'), delimiter='#')
     for row in reader:
         if row:
             print row[3]
-            query += "(%s,%s,'%s',%s,%s,'%s')," % (
+            query += "(%s,%s,'%s',%s,%s,'%s','%s','%s')," % (
                 row[0],
                 row[1],
                 datetime.strptime(row[2], '%m/%d/%Y').strftime("%Y-%m-%d"),
                 row[3].split('[')[1].split(']')[0],
                 row[4],
-                row[5]
+                row[5],
+                row[6],
+                row[7]
             )
 
 

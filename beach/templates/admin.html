@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+{% block content %}
+<br>
+
+
+<div class="col-xs-6">
+    <div class="form-group">
+
+            <!-- Site -->
+            <label for="name">1. Site Information</label>
+            <p>Type site info to add</p>
+            <input type="text" class="form-control" id="siteToAdd" placeholder="site name"><br>
+            <input type="text" class="form-control" id="siteState" placeholder="site State"><br>
+            <input type="text" class="form-control" id="siteCounty" placeholder="site County"><br>
+            <input type="text" class="form-control" id="siteTown" placeholder="site Town"><br>
+            <input type="text" class="form-control" id="siteStreet" placeholder="site Street"><br>
+            <button type="submit" id="addSite" class="btn btn-primary" onclick="addSite()">Add Site</button>
+            <br><br>
+            <!--
+            <p>Select a site to delete</p>
+            <select id="site" name="sites" class="form-control form-control-inline">
+                <option selected disabled>Please select your site</option>
+                {% for site_key, site_name in sites %}
+                    <option value="{{ site_name }}" id="{{ site_key }}">{{ site_name }}</option>
+                {% endfor %}
+            </select><br>
+            <button type="submit" id="delSite" class="btn btn-primary" onclick="delSite()">Delete Site</button>
+            -->
+            <hr>
+
+            <!-- TLs -->
+            <label for="name">2. Team Leader</label>
+            <p>Type a team leader name to add</p>
+            <input type="text" class="form-control" id="tlToAdd" placeholder="tl"><br>
+            <button type="submit" id="addTl" class="btn btn-primary" onclick="addTl()">Add Team Leader</button>
+            <br><br>
+            <!--
+            <p>Select a team leader name to delete</p>
+            <select id="tl" name="tls" class="form-control form-control-inline">
+                <option selected disabled>Please select your team leader</option>
+                {% for tl_key, tl_name in tls %}
+                    <option value="{{ tl_name }}" id="{{ tl_key }}">{{ tl_name }}</option>
+                {% endfor %}
+            </select><br>
+            <button type="submit" id="delTl" class="btn btn-primary" onclick="delTl()">Delete Team Leader</button>
+           -->
+
+    </div>
+
+    <script type="text/javascript">
+        function addSite()
+        {
+            var sitename=document.getElementById("siteToAdd").value;
+            $.ajax({url: "/contribution/addSite",
+                type: "POST",
+                data: sitename,
+                success: "Site has been added to db!"
+                });
+
+        }
+
+    </script>
+</div>
+
+
+
+
+{% endblock %}

@@ -61,6 +61,15 @@
                 <br>
                 <button type="add" name="add" class="btn btn-default btn-sm" onclick="addTable()">Add</button>
             </div>
+
+            <!-- Updater -->
+            <label for="name">5. Your Info</label>
+            <div class="well well-sm">
+                <p>Please type your name</p>
+                <input type="text" class="form-control dp" id="updater"><br>
+                <p>Please type event code</p>
+                <input type="text" class="form-control dp" id="eventcode"><br>
+            </div>
     </div>
 </div>
 
@@ -181,9 +190,13 @@
 
         var table = document.getElementById("trash_table");
 
+        var updater = document.getElementById("updater").value;
+        var eventcode = document.getElementById("eventcode").value;
+
         for (var i = 1, row; row = table.rows[i]; i++) {
-            var line=""+site+"#"+tl+"#"+date
+            var line=""+site+"#"+tl+"#"+date;
             line=line+"#"+row.cells[0].textContent+"#"+row.cells[1].textContent+"#"+row.cells[2].textContent+"";
+            line=line+"#"+updater+"#"+eventcode;
             lines=lines+"||"+line;
         }
     }
