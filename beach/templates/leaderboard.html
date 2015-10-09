@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block content %}
+<br>
+<div class="container">
+
+<table class="table">
+    <tr><td>Rank</td><td>Name</td><td>Records Entered</td></tr>
+    {% for r in lb %}
+        <tr><td>{{ loop.index }}</td><td>{{ r[0] }}</td><td>{{ r[1] }}</td></tr>
+    {% endfor %}
+    <tr></tr>
+</table>
+
+</div>
+
+
+{% endblock %}

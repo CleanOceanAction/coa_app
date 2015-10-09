@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+            <div class="well well-sm">
+                <p>Please type your name</p>
+                <input type="text" class="form-control dp" id="updater" value="{{ updater }}"><br>
+                <p>Please type event code</p>
+                <input type="text" class="form-control dp" id="eventcode" value="{{ eventcode }}"><br>
+                <button type="save" name="save" class="btn btn-default btn-sm" onclick="saveUserInfo()">Enter</button>
+            </div>
+
+<script>
+        function saveUserInfo(){
+         var updater = document.getElementById("updater").value;
+         var eventcode = document.getElementById("eventcode").value;
+         $.ajax({url: "/contribution/saveuserinfo",
+                type: "POST",
+                data: updater+'||'+eventcode,
+                success: handleRes,
+                });
+
+    }
+
+    function handleRes(msg){
+        document.body.innerHTML="";
+        document.write(msg);
+    }
+
+</script>
+{% endblock %}

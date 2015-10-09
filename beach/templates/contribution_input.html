@@ -63,12 +63,12 @@
             </div>
 
             <!-- Updater -->
-            <label for="name">5. Your Info</label>
             <div class="well well-sm">
-                <p>Please type your name</p>
-                <input type="text" class="form-control dp" id="updater"><br>
-                <p>Please type event code</p>
-                <input type="text" class="form-control dp" id="eventcode"><br>
+                <label>Your name</label>
+                <input type="text" class="form-control dp" id="updater" value="{{ updater }}" disabled><br>
+                <label>Event code</label>
+                <input type="text" class="form-control dp" id="eventcode" value="{{ eventcode }}" disabled><br>
+                <button type="modify" name="modify" class="btn btn-default btn-sm" onclick="logout()">Modify</button>
             </div>
     </div>
 </div>
@@ -178,7 +178,10 @@
                  }
              }
     }
+
     function submit(){
+        var lines="";
+
         var s = document.getElementById("site");
         var site = s.options[s.selectedIndex].id;
 
@@ -199,22 +202,41 @@
             line=line+"#"+updater+"#"+eventcode;
             lines=lines+"||"+line;
         }
+
+        $.ajax({url: "/contribution/updatedb",
+                type: "POST",
+                data: escape(lines),
+                success:handleReturn,
+                });
     }
 
-    $(document).ready(function(){
-        $("#submit").click(function(){
-            $.ajax({url: "/contribution/updatedb",
-                type: "POST",
-                data: lines,
-                success: window.location.replace("/contribution/thank_you")
-                });
-        });
-    });
+
+    function handleReturn(msg){
+        if(msg=="Your records have been successfully saved!")
+        {
+            window.location.replace("/contribution/thank_you")
+        }
+        else
+        {
+            alert(msg);
+        }
+    }
 
     function reset(){
         window.location.replace("/contribution");
     }
 
+    function logout(){
+         $.ajax({url: "/contribution/saveuserinfo",
+                type: "POST",
+                data: '||',
+                success: handleRes
+                });
+    }
+    function handleRes(msg){
+        document.body.innerHTML="";
+        document.write(msg);
+    }
 
 </script>
  

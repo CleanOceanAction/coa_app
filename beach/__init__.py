@@ -17,6 +17,8 @@ from beach.config import ProdConfig
 
 
 application = Flask(__name__)
+application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
 
 if os.uname()[1] == 'R-n-D-MacBook-Pro.local':
     application.config.from_object(DevConfig)
