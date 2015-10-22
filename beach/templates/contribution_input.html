@@ -6,36 +6,54 @@
 <div class="col-xs-6">
     <div class="form-group">
 
-            <!-- Site -->
-            <label for="name">1. Site Information</label>
-            <p>Select your site</p>
-            <select id="site" name="sites" class="form-control form-control-inline">
-                <option selected disabled>Please select your site</option>
-                {% for site_key, site_name in sites %}
-                    <option value="{{ site_name }}" id="{{ site_key }}">{{ site_name }}</option>
-                {% endfor %}
-            </select>
-            <br>
+            <!-- Team -->
+            <label for="name">1. Team Information</label>
+            <div class="well well-sm">
+                <!-- Site -->
+                <p>Your volunteer site</p>
+                <select id="site" name="sites" class="form-control form-control-inline">
+                    <option selected disabled>Please select your site</option>
+                    {% for site_key, site_name in sites %}
+                        <option value="{{ site_name }}" id="{{ site_key }}">{{ site_name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
 
-            <!-- TLs -->
-            <label for="name">2. Team Leader</label>
-            <p>Select your team leader</p>
-            <select id="tls" name="tls" class="form-control form-control-inline">
-                <option selected disabled>Please select your team leader</option>
-                {% for tl_key, tl_name in tls %}
-                    <option value="{{ tl_name }}" id="{{ tl_key }}">{{ tl_name }}</option>
-                {% endfor %}
-            </select>
-             <br>
+                <!-- Date -->
+                <p>Your volunteer date</p>
+                <input type="text" class="form-control dp" id="date" placeholder="MM/DD/YYYY">
+                <br>
 
-            <!-- Date -->
-            <label for="name">3. Volunteer Date</label>
-            <p>Please indicate your volunteer date</p>
-            <input type="text" class="form-control dp" id="date" placeholder="MM/DD/YYYY" id="start_date">
-            <br>
+                <!-- Captian-->
+                <p>Your team leader</p>
+                <input type="text" class="form-control" id="tls" placeholder="team captain name">
+                <br>
+
+                <!-- number of people-->
+                <p>Number of people in the team</p>
+                <input type="number" min="1" step="1" class="form-control" name='numofpeople' id="numofpeople" placeholder="Number of people"/>
+                <br>
+
+                <!-- number of trash bags-->
+                <p>Number of trash bags collected</p>
+                <input type="number" min="1" step="1" class="form-control" name='numofbags' id="numofbags" placeholder="Number of bags"/>
+                <br>
+
+                <!-- trash weight (lbs)-->
+                <p>Trash Weight (lbs)</p>
+                <input type="number" min="1" step="1" class="form-control" name='trashweight' id="trashweight" placeholder="Trash Weight (lbs)"/>
+                <br>
+
+                <!-- walking distance (miles)-->
+                <p>Walking Distance (miles)</p>
+                <input type="number" min="1" step="1" class="form-control" name='walkingdistance' id="walkingdistance" placeholder="Walking Distance (miles)"/>
+                <br>
+            </div>
+
+
 
             <!-- Trash -->
-            <label for="name">4. Trash Info</label>
+            <label for="name">2. Trash Info</label>
             <div class="well well-sm">
                 <p>Please indicate the trash category</p>
                 <select id="parent" name="parent" class="form-control form-control-inline" onchange='selectChild()'>
@@ -186,26 +204,41 @@
         var site = s.options[s.selectedIndex].id;
 
         var t = document.getElementById("tls");
-        var tl = t.options[t.selectedIndex].id;
+        var tl = t.value;
 
         var d = document.getElementById("date");
         var date = d.value;
+
+        var np = document.getElementById("numofpeople");
+        var numofpeople = np.value;
+
+        var nb = document.getElementById("numofbags");
+        var numofbags = nb.value;
+
+        var tw = document.getElementById("trashweight");
+        var trashweight = tw.value;
+
+        var wd = document.getElementById("walkingdistance");
+        var walkingdistance = wd.value;
 
         var table = document.getElementById("trash_table");
 
         var updater = document.getElementById("updater").value;
         var eventcode = document.getElementById("eventcode").value;
 
+        var team_info_line=""+site+"#"+date+"#"+tl+'#'+numofpeople+'#'+numofbags+'#'+trashweight+'#'+walkingdistance+'#'+updater;
+
         for (var i = 1, row; row = table.rows[i]; i++) {
-            var line=""+site+"#"+tl+"#"+date;
-            line=line+"#"+row.cells[0].textContent+"#"+row.cells[1].textContent+"#"+row.cells[2].textContent+"";
+            var line=row.cells[0].textContent+"#"+row.cells[1].textContent+"#"+row.cells[2].textContent+"";
             line=line+"#"+updater+"#"+eventcode;
             lines=lines+"||"+line;
         }
 
+
+
         $.ajax({url: "/contribution/updatedb",
                 type: "POST",
-                data: escape(lines),
+                data: escape(team_info_line+'----'+lines),
                 success:handleReturn,
                 });
     }
@@ -237,6 +270,17 @@
         document.body.innerHTML="";
         document.write(msg);
     }
+
+    $(function() {
+        var availableTags = [
+            {% for tl in tls %}
+                "{{ tl }}",
+            {% endfor %}
+        ];
+        $( "#tls" ).autocomplete({
+            source: availableTags
+        });
+    });
 
 </script>
  

@@ -52,8 +52,8 @@ def collected_items():
 def get_leaderboard():
     query = """
     SELECT updated_by,count(*) as cnt
-    FROM coa.volunteer_record
-    where updated_by<>"" and event_code<>""
+    FROM coa.volunteer_info
+    where updated_by<>"" and event_code like "COA%"
     group by updated_by order by count(*) desc
     """
     lb=db.fetch_data(query)
@@ -136,6 +136,7 @@ def contribute():
         sites = get_sites()
         tls = get_tls()
         trash_items = get_trash_items()
+
         return render_template("contribution_input.html",
                                title=title,
                                sites=sites,
@@ -159,13 +160,15 @@ def get_sites():
 
 def get_tls():
     query = """
-    SELECT
-        team_id,
-        captain_name
-    FROM coa.team
-    ORDER BY captain_name;
+    SELECT DISTINCT team_captain
+    FROM coa.team_info
+    ORDER BY team_captain;
     """
-    tls = [tl for tl in db.fetch_data(query)]
+    tls = [tl[0] for tl in db.fetch_data(query)]
+
+
+    print tls
+
     return tls
 
 
@@ -193,34 +196,45 @@ def get_trash_items():
 
 
 def create_query(imd):
-    table = 'coa_inputs'
-    cols = ['site_id', 'group_captain', 'date', 'category', 'quantity', 'brand','updated_by','event_code']
-    query = """
-    insert into volunteer_record
-    (site_id, team_id, volunteer_date, item_id, quantity, brand,updated_by,event_code)
+    team_query = """
+    INSERT INTO coa.team_info
+    (site_id,volunteer_date,team_captain,num_of_people,num_of_trashbags
+    ,trash_weight,walking_distance,updated_by)
     VALUES
     """
 
+    volunteer_query = """
+    INSERT INTO coa.volunteer_info (team_id,item_id,quantity,brand,updated_by,event_code)
+    VALUES
+    """
 
-    print query
+    post_str=imd.items()[0][0]
+    team_info, volunteer_info = post_str.split('----')
 
-
-    reader = csv.reader(imd.items()[0][0].split('||'), delimiter='#')
-    for row in reader:
-        if row:
-            print row
-            query += "(%s,%s,'%s',%s,%s,'%s','%s','%s')," % (
+    row = team_info.split('#')
+    team_query += "(%s,'%s','%s',%s,%s,%s,%s,'%s')" % (
                 row[0],
-                row[1],
-                datetime.strptime(row[2], '%m/%d/%Y').strftime("%Y-%m-%d"),
-                row[3].split('[')[1].split(']')[0],
+                datetime.strptime(row[1], '%m/%d/%Y').strftime("%Y-%m-%d"),
+                row[2],
+                row[3],
                 row[4],
                 row[5],
                 row[6],
                 row[7]
+    )
+
+    volunteer_reader = csv.reader(volunteer_info.split('||'), delimiter='#')
+    for row in volunteer_reader:
+        if row:
+            volunteer_query += "(%s,%s,%s,'%s','%s','%s')," % (
+                'LAST_INSERT_ID()',
+                row[0].split('[')[1].split(']')[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4]
             )
 
-
-    print query[:-1] + ';'
-    return query[:-1] + ';'
+    query = "BEGIN; " + team_query + "; " + volunteer_query[:-1] + "; COMMIT;"
+    return query
 
