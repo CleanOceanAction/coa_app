@@ -2,6 +2,26 @@
 {% block content %}
 <br>
 
+<div class="input-group col-md-6">
+
+
+    <div class="col-xs-3">
+
+    <input type="text" class="form-control" id="updater" value="{{ updater }}" disabled>
+    </div>
+
+        <div class="col-xs-3">
+
+     <input type="text" class="form-control" id="eventcode" value="{{ eventcode }}" disabled>
+
+    </div>
+
+    <button  name="modify" class="btn btn-default btn-sm" onclick="logout()">Log Out</button>
+
+
+
+</div>
+<br>
 
 <div class="col-xs-6">
     <div class="form-group">
@@ -81,17 +101,18 @@
             </div>
 
             <!-- Updater -->
-            <div class="well well-sm">
+            <!--<div class="well well-sm">
                 <label>Your name</label>
                 <input type="text" class="form-control dp" id="updater" value="{{ updater }}" disabled><br>
                 <label>Event code</label>
                 <input type="text" class="form-control dp" id="eventcode" value="{{ eventcode }}" disabled><br>
-                <button type="modify" name="modify" class="btn btn-default btn-sm" onclick="logout()">Modify</button>
-            </div>
+                <button type="modify" name="modify" class="btn btn-default btn-sm" onclick="logout()">Log Out</button>
+            </div>-->
     </div>
 </div>
 
 <div class="col-xs-6">
+
     <label for="name">Your Impact</label>
     <br>
 
@@ -182,6 +203,11 @@
         cell2.innerHTML = qty;
         cell3.innerHTML = brand;
         cell4.innerHTML = "<label id='"+cnt+"' onclick='removeRow(this)'>x</label>";
+
+        //set quantity and brand value to empty
+        document.getElementById("qty").value="";
+        document.getElementById("brand").value="";
+
     }
 
     function removeRow(l) {
