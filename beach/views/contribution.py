@@ -153,7 +153,10 @@ def get_sites():
     """
     Get all the possible possible inputs for pull down
     """
-    query = "SELECT site_id, CONCAT(town, ', ', site_name) AS site_name FROM coa.site ORDER BY town, site_name;"
+    query = """
+    SELECT site_id, CONCAT(county, ', ', town, ', ', COALESCE(street, '')) AS site_name
+    FROM coa.site ORDER BY county, town, street;
+    """
     sites = db.fetch_data(query)
     return sites
 
