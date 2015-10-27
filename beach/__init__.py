@@ -20,7 +20,7 @@ application = Flask(__name__)
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 
-if os.uname()[1] == 'R-n-D-MacBook-Pro.local':
+if os.uname()[1] in ['R-n-D-MacBook-Pro.local', 'R-n-D-MacBook-Pro-3.local']:
     application.config.from_object(DevConfig)
 else:
     application.config.from_object(ProdConfig)
