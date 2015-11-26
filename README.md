@@ -6,8 +6,8 @@ As non-profit organizations continue to face challenges in backing their respect
 
 #Introduction
 In order to pilot this skills-based volunteer initiative, Bloomberg partnered with Clean Ocean Action (COA), an organization Bloomberg already had an extensive relationship with. Bloomberg has had a long time history of performing Beach Sweeps with COA since 2011. As of July 2015, 185 unique employees have dedicated almost 800 hours across 17 volunteer events.
-Clean Ocean Action: [http://www.cleanoceanaction.org](http://www.cleanoceanaction.org)
-Bloomberg Philanthropy: [http://www.cleanoceanaction.org](http://www.bloomberg.org)
+- Clean Ocean Action: [http://www.cleanoceanaction.org](http://www.cleanoceanaction.org)
+- Bloomberg Philanthropy: [http://www.cleanoceanaction.org](http://www.bloomberg.org)
 
 #Schema Architecture
 The first task of introducing the new data governance system was to thoroughly review the current data retrieval process in order to fully understand the data flow from beginning to end, as data could be deteriorated at any point of the process. To begin, we interviewed the COA and American Littoral Society staff as well as internal Bloomberg employees who participated in the COA beach clean-ups to identify the steps volunteers take to report the collected trash items from beaches and the procedures the COA staff follow to compile the data. Based on the observations and analysis of the 1993-2014 datasets, database schemas were developed in MySQL, for both its reputation and significant presence in the data science community.
