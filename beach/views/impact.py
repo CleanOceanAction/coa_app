@@ -13,7 +13,6 @@ from flask import Blueprint, render_template, request, Response, redirect, url_f
 import csv
 from beach import db
 
-
 imp = Blueprint('impact', __name__, template_folder='/../templates')
 
 
@@ -21,5 +20,23 @@ imp = Blueprint('impact', __name__, template_folder='/../templates')
 def home():
     title = ''
     paragraph = ['This page displays .....']
+    itemcategory = get_itemcategory()
+    return render_template('impact.html', title=title, paragraph=paragraph, data=None, active_page='impact',
+                           itemcategory=itemcategory)
 
-    return render_template('impact.html', title=title, paragraph=paragraph, data=None, active_page='impact')
+
+def get_itemcategory():
+    """
+    Get all the possible possible inputs for pull down
+    """
+    query = """
+        select concat(material,'--',category
+        ,'\t',cast(round(sum(quantity)/(select sum(quantity) from volunteer_info)*100,2) as char)
+        ,'%')as cnt
+        from volunteer_info a
+        join  item b
+        on a.item_id=b.item_id
+        group by material,b.category
+    """
+    itemcategory = db.fetch_data(query)
+    return itemcategory
