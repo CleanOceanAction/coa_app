@@ -1,20 +1,28 @@
 {% extends "index.html" %}
 {% block content %}
 <br>
-
 <div class="jumbotron"><h3 align="center">Q: What's the trend of debris being collected?</h3></div>
 <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <div class="jumbotron">
-<h3 align="center">Q: What debris have been collected by Clean Ocean Action Beach Sweep?</h3></div>
+    <h3 align="center">Q: What debris have been collected by Clean Ocean Action Beach Sweep?</h3>
+</div>
+
+<div style="text-align: center; padding-bottom: 30px">
+    <span style="font-weight: bold; padding-right: 10px">Select Year</span>
+    {% for i in years %}
+        <button class="btn btn-default btn-xs" id={{i}}>{{i}}</button>
+    {% endfor %}
+</div>
+
 <div id="container1" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
 
 <div class="jumbotron"><h3 align="center">Q: Which beaches need our help? </h3></div>
 <div id="container2" style="min-width: 310px; max-width: 1000px; height: 600px; margin: 0 auto"></div>
 
 <pre id="tsv" style="display:none">
-    {% for i in itemcategory %}
-        {{ i[0] }}
+    {% for i in item_categories %}
+        {{ i }}
     {% endfor %}
 </pre>
 
@@ -49,20 +57,24 @@
 </div>
 -->
 <script>
+var chart = null;
 
 $(function () {
-
     Highcharts.data({
         csv: document.getElementById('tsv').innerHTML,
         itemDelimiter: '\t',
         parsed: function (columns) {
+            var columnFilter = function (value) {
+                if (value !== undefined && value != "undefined") {
+                    return true;
+                }
+                return false;
+            }
 
-            var brands = {},
-                brandsData = [],
-                versions = {},
-                drilldownSeries = [];
+            columns[0] = $.grep(columns[0], columnFilter);
+            columns[1] = $.grep(columns[1], columnFilter);
 
-            // Parse percentage strings
+	        // Parse percentage strings
             columns[1] = $.map(columns[1], function (value) {
                 if (value.indexOf('%') === value.length - 1) {
                     value = parseFloat(value);
@@ -70,89 +82,106 @@ $(function () {
                 return value;
             });
 
-            $.each(columns[0], function (i, name) {
-                var brand,
-                    version;
+            var generateSeriesData = function(year) {
+                var topLevelAggregated = {},
+                    drillDownAggregated = {},
+                    topLevelSeries = [],
+                    drillDownSeries = [];
 
-                if (i > 0) {
+                $.each(columns[0], function (i, name) {
+                    var material,
+                        category;
 
-                    // Remove special edition notes
-                    version=name.split('--')[1]
-                    brand = name.split('--')[0];
+                    if (i > 0) {
+                        tokens = name.split('--');
+                        if (parseInt(tokens[0]) === year) {
+                            material = tokens[1];
+                            category = tokens[2];
 
-                    // Split into brand and version
-                    // version = name.match(/([0-9]+[\.0-9x]*)/);
-                    //if (version) {
-                    //    version = version[0];
-                    //}
-                    //brand = name.replace(version, '');
+                            // Create the top level data
+                            if (!topLevelAggregated[material]) {
+                                topLevelAggregated[material] = columns[1][i];
+                            } else {
+                                topLevelAggregated[material] += columns[1][i];
+                            }
 
-                    // Create the main data
-                    if (!brands[brand]) {
-                        brands[brand] = columns[1][i];
-                    } else {
-                        brands[brand] += columns[1][i];
-                    }
-
-                    // Create the version data
-                    if (version !== null) {
-                        if (!versions[brand]) {
-                            versions[brand] = [];
-                        }
-                        versions[brand].push([ version, columns[1][i]]);
-                    }
-                }
-
-            });
-
-            $.each(brands, function (name, y) {
-                brandsData.push({
-                    name: name,
-                    y: y,
-                    drilldown: versions[name] ? name : null
-                });
-            });
-            $.each(versions, function (key, value) {
-                drilldownSeries.push({
-                    name: key,
-                    id: key,
-                    data: value
-                });
-            });
-
-            // Create the chart
-            $('#container1').highcharts({
-                chart: {
-                    type: 'pie'
-                },
-                title: {
-                    text: 'Debris Categories'
-                },
-                subtitle: {
-                    text: 'Click the slices to view versions'
-                },
-                plotOptions: {
-                    series: {
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.name}: {point.y:.1f}%'
+                            // Create the drill down data
+                            if (category !== null) {
+                                if (!drillDownAggregated[material]) {
+                                    drillDownAggregated[material] = [];
+                                }
+                                drillDownAggregated[material].push([category, columns[1][i]]);
+                            }
                         }
                     }
-                },
+                });
 
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-                },
+                $.each(topLevelAggregated, function (name, y) {
+                    topLevelSeries.push({
+                        name: name,
+                        y: y,
+                        drilldown: drillDownAggregated[name] ? name : null
+                    });
+                });
 
-                series: [{
-                    name: 'toplevel',
-                    colorByPoint: true,
-                    data: brandsData
-                }],
-                drilldown: {
-                    series: drilldownSeries
-                }
+                $.each(drillDownAggregated, function (key, value) {
+                    drillDownSeries.push({
+                        name: key,
+                        id: key,
+                        data: value
+                    });
+                });
+
+                return {topLevelSeries: topLevelSeries,
+                        drillDownSeries: drillDownSeries};
+            }
+
+            // Generate default series on page load
+            const DEFAULT_YEAR_ON_PAGE_LOAD = 2017;
+            var seriesData = generateSeriesData(DEFAULT_YEAR_ON_PAGE_LOAD);
+
+            var generateChartOptions = function(year, seriesData) {
+                return {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: `Debris Categories (${year})`
+                    },
+                    subtitle: {
+                        text: 'Click the slices to view versions'
+                    },
+                    plotOptions: {
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.name}: {point.y:.1f}%'
+                            }
+                        }
+                    },
+
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    },
+
+                    series: [{
+                        name: 'toplevel',
+                        colorByPoint: true,
+                        data: seriesData.topLevelSeries
+                    }],
+                    drilldown: {
+                        series: seriesData.drillDownSeries
+                    }
+                };
+            }
+
+            chart = Highcharts.chart('container1', generateChartOptions(DEFAULT_YEAR_ON_PAGE_LOAD, seriesData));
+
+            $('.btn').click(function(e) {
+                var year = parseInt(e.target.id);
+                var seriesData = generateSeriesData(year);
+                chart = new Highcharts.Chart('container1', generateChartOptions(year, seriesData));
             });
         }
     });

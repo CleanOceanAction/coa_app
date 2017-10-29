@@ -20,23 +20,34 @@ imp = Blueprint('impact', __name__, template_folder='/../templates')
 def home():
     title = ''
     paragraph = ['This page displays .....']
-    itemcategory = get_itemcategory()
+    years = set()
+    item_categories = []
+    for year, item_category in get_item_categories_for_all_years():
+        years.add(year)
+        item_categories.append(item_category)
+
     return render_template('impact.html', title=title, paragraph=paragraph, data=None, active_page='impact',
-                           itemcategory=itemcategory)
+                           item_categories=item_categories, years=sorted(years))
 
 
-def get_itemcategory():
+def get_item_categories_for_all_years():
     """
-    Get all the possible possible inputs for pull down
+    Returns the data for materials and categories for all years as a list of '--' delimited strings.
+    :return list of tuples:
     """
     query = """
-        select concat(material,'--',category
-        ,'\t',cast(round(sum(quantity)/(select sum(quantity) from volunteer_info)*100,2) as char)
-        ,'%')as cnt
-        from volunteer_info a
-        join  item b
-        on a.item_id=b.item_id
-        group by material,b.category
+        select a.yr, concat(a.yr,'--',a.material,'--',a.category,'\t',cast(round(a.total/b.yr_total*100,2) as char),'%') as cnt
+        from (
+            select year(volunteer_date) as yr, material, category, sum(quantity) as total 
+            from coa_summary_view 
+            group by year(volunteer_date), category
+        ) as a
+        left join (
+            select year(volunteer_date) as yr, sum(quantity) as yr_total 
+            from coa_summary_view 
+            group by yr
+        ) as b 
+        on a.yr = b.yr
     """
-    itemcategory = db.fetch_data(query)
-    return itemcategory
+    result = db.fetch_data(query)
+    return result
