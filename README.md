@@ -45,4 +45,4 @@ Thanks for volunteering to help with this project! To get started, you should ha
 3. Install [Flask](http://flask.pocoo.org/docs/0.12/installation/)
 4. Clone this repo
 5. Change beach/config.py with hard coded credentials
-6. Run the application and check it runs by going to [this url](0.0.0.0:80/impact)
+6. Run the application and check it runs by going to [this url](http://0.0.0.0:80/impact)
