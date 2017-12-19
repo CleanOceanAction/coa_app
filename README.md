@@ -5,7 +5,7 @@ Web Analytics Dashboard For Clean Ocean Action
 
 - Clean Ocean Action: [http://www.cleanoceanaction.org](http://www.cleanoceanaction.org)
 - Bloomberg Philanthropy: [http://www.cleanoceanaction.org](http://www.bloomberg.org)
-- Application Site: [http://coa-app.elasticbeanstalk.com/impact/](http://coa-app.elasticbeanstalk.com/impact/)
+- Application: [http://coa-app.elasticbeanstalk.com/impact/](http://coa-app.elasticbeanstalk.com/impact/)
 
 Bloomberg partnered with Clean Ocean Action (COA), an organization Bloomberg already had an extensive relationship with, to solve its data challenge. We performed these tasks in order to streamline its data collection process for Beach Sweeps.
 
