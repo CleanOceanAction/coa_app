@@ -12,19 +12,12 @@ loads config into dashboard object depends on web server
 from flask import Flask
 import os
 
-from beach.config import DevConfig
-from beach.config import ProdConfig
+from beach.config import Config
 
 
 application = Flask(__name__)
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-
-if os.uname()[1] in ['R-n-D-MacBook-Pro.local', 'R-n-D-MacBook-Pro-3.local']:
-    application.config.from_object(DevConfig)
-else:
-    application.config.from_object(ProdConfig)
-
+application.config.from_object(Config)
 
 from beach.views.contribution import cont
 from beach.views.impact import imp
