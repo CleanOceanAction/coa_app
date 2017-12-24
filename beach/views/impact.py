@@ -26,8 +26,21 @@ def home():
         years.add(year)
         item_categories.append(item_category)
 
-    return render_template('impact.html', title=title, paragraph=paragraph, data=None, active_page='impact',
-                           item_categories=item_categories, years=sorted(years))
+    counties = set()
+    total_debris_per_county_by_year = []
+    for county, county_year_total in get_totals_per_county_by_year():
+        counties.add(county)
+        total_debris_per_county_by_year.append(county_year_total)
+
+    return render_template('impact.html', 
+                            title=title, 
+                            paragraph=paragraph, 
+                            data=None, 
+                            active_page='impact',
+                            item_categories=item_categories, 
+                            years=sorted(years), 
+                            counties=sorted(counties),
+                            total_debris_per_county_by_year=total_debris_per_county_by_year)
 
 
 def get_item_categories_for_all_years():
@@ -43,11 +56,24 @@ def get_item_categories_for_all_years():
             group by year(volunteer_date), category
         ) as a
         left join (
-            select year(volunteer_date) as yr, sum(quantity) as yr_total 
+            select year(volunteer_date) as yr, county, sum(quantity) as yr_total 
             from coa_summary_view 
             group by yr
         ) as b 
         on a.yr = b.yr
+    """
+    result = db.fetch_data(query)
+    return result
+
+def get_totals_per_county_by_year():
+    """
+    Returns the total debris collected in each county by year.
+    Return format <county>, <county--year \t total debris>.
+    """
+    query = """
+        select county, concat(county, '--', cast(year(volunteer_date) as char), '\t', cast(sum(quantity) as char)) as count 
+        from coa_summary_view 
+        group by year(volunteer_date), county;
     """
     result = db.fetch_data(query)
     return result

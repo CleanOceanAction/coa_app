@@ -2,6 +2,13 @@
 {% block content %}
 <br>
 <div class="jumbotron"><h3 align="center">Q: What's the trend of debris being collected?</h3></div>
+<div style="text-align: center; padding-bottom: 30px">
+    <span style="font-weight: bold; padding-right: 10px">Select County</span>
+    {% for i in counties %}
+        <button class="btn btn-default btn-xs btn-county" id={{i}}>{{i}}</button>
+    {% endfor %}
+</div>
+
 <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <div class="jumbotron">
@@ -11,7 +18,7 @@
 <div style="text-align: center; padding-bottom: 30px">
     <span style="font-weight: bold; padding-right: 10px">Select Year</span>
     {% for i in years %}
-        <button class="btn btn-default btn-xs" id={{i}}>{{i}}</button>
+        <button class="btn btn-default btn-xs btn-year-pie-chart" id={{i}}>{{i}}</button>
     {% endfor %}
 </div>
 
@@ -26,36 +33,12 @@
     {% endfor %}
 </pre>
 
-<!--
-<div class="jumbotron"><h3 align="center">Q: How long does it take an item to degrade?</h3></div>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <img src="/static/img/degrad.png" class="img-responsive">
-    </div>
-</div>
+<pre id="county-debris-total-by-year" style="display:none">
+    {% for i in total_debris_per_county_by_year %}
+        {{ i }}
+    {% endfor %}
+</pre>
 
-
-<div class="jumbotron"><h3 align="center">Q: Did walking farther mean picking up more trash?</h3></div>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <img src="/static/img/dist_trash.png" class="img-responsive">
-    </div>
-</div>
-
-<div class="jumbotron"><h3 align="center">Q: What are the types of trash most prominent in each county?</h3></div>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <img src="/static/img/coa_radar.png" class="img-responsive">
-    </div>
-</div>
-
-<div class="jumbotron"><h3 align="center">Q: What was collected the most?</h3></div>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <img src="/static/img/litter1.png" class="img-responsive">
-    </div>
-</div>
--->
 <script>
 var chart = null;
 
@@ -64,6 +47,7 @@ $(function () {
         csv: document.getElementById('tsv').innerHTML,
         itemDelimiter: '\t',
         parsed: function (columns) {
+            console.log(columns);
             var columnFilter = function (value) {
                 if (value !== undefined && value != "undefined") {
                     return true;
@@ -178,7 +162,7 @@ $(function () {
 
             chart = Highcharts.chart('container1', generateChartOptions(DEFAULT_YEAR_ON_PAGE_LOAD, seriesData));
 
-            $('.btn').click(function(e) {
+            $('.btn-year-pie-chart').click(function(e) {
                 var year = parseInt(e.target.id);
                 var seriesData = generateSeriesData(year);
                 chart = new Highcharts.Chart('container1', generateChartOptions(year, seriesData));
@@ -333,110 +317,88 @@ $(function () {
 
 });
 
-
 $(function () {
-
-    var ranges = [
-          [1993,135919,135919],
-[1994,187381,187381],
-[1995,222823,222823],
-[1996,173477,173477],
-[1997,209110,209110],
-[1998,184954,184954],
-[1999,252427,252427],
-[2000,212293,212293],
-[2001,243475,243475],
-[2002,221742,221742],
-[2003,242714,242714],
-[2004,338423,338423],
-[2005,160831,160831],
-[2006,259053,259053],
-[2007,304342,304342],
-[2008,289976,289976],
-[2009,301564,301564],
-[2010,475321,475321],
-[2011,452698,452698],
-[2012,351781,351781],
-[2013,325163,325163],
-[2014,164880,1332514],
-[2015,175068,1642902],
-[2016,184250,2043563],
-        ],
-        averages = [
-           [1993,135919],
-[1994,187381],
-[1995,222823],
-[1996,173477],
-[1997,209110],
-[1998,184954],
-[1999,252427],
-[2000,212293],
-[2001,243475],
-[2002,221742],
-[2003,242714],
-[2004,338423],
-[2005,160831],
-[2006,131251],
-[2007,248165],
-[2008,146505],
-[2009,215466],
-[2010,388512],
-[2011,484481],
-[2012,290335],
-[2013,325163],
-[2014,468727],
-[2015,536302],
-[2016,613618],
-        ];
-
-
-
-    $('#container3').highcharts({
-
-        title: {
-            text: 'Total Debris Items Collected since 1993'
-        },
-
-        xAxis: {
-            type: 'Source: http://www.cleanoceanaction.org/'
-            ,title: {text: 'Year'}
-        },
-
-        yAxis: {
-            title: {text: 'Number of items'}
-        },
-
-        tooltip: {
-            crosshairs: true,
-            //shared: true,
-            //valueSuffix: ' items'
-        },
-
-        legend: {
-        },
-
-        series: [{
-            name: 'Total debris items',
-            data: averages,
-            zIndex: 1,
-            marker: {
-                fillColor: 'white',
-                lineWidth: 2,
-                lineColor: Highcharts.getOptions().colors[0]
+    Highcharts.data({
+        csv: document.getElementById('county-debris-total-by-year').innerHTML,
+        itemDelimiter: '\t',
+        parsed: function (columns) {
+            var columnFilter = function (value) {
+                if (value !== undefined && value != "undefined") {
+                    return true;
+                }
+                return false;
             }
-        }, {
-            name: 'Range',
-            data: ranges,
-            type: 'arearange',
-            lineWidth: 0,
-            linkedTo: ':previous',
-            color: Highcharts.getOptions().colors[0],
-            fillOpacity: 0.3,
-            zIndex: 0
-        }]
+
+            columns[0] = $.grep(columns[0], columnFilter); // county-year
+            columns[1] = $.grep(columns[1], columnFilter); // total debris
+
+            var generateSeriesData = function(county) {
+                var seriesData = []; // Will be a 2D array of [year,totalDebris] per county
+                var categories = []; // By year
+
+                $.each(columns[0], function (i, countyAndYear) {
+                    var x_y_values = [];
+
+                    if (i >= 0) {
+                        // Parse "<county>--<year>" string 
+                        tokens = countyAndYear.split('--');
+                        if (tokens[0] === county) {
+                            year = parseInt(tokens[1]);
+
+                            console.log("Year=" + year + "; Total Debris=" + columns[1][i]);
+                            x_y_values[0] = year;
+                            x_y_values[1] = columns[1][i]
+                            categories.push(year);
+
+                            seriesData.push(x_y_values);
+                        }
+                    }
+                });
+                return {categories: categories, seriesData: seriesData};
+            }
+
+            // Generate default series on page load
+            const DEFAULT_COUNTY_ON_PAGE_LOAD = 'Atlantic';
+            var seriesData = generateSeriesData(DEFAULT_COUNTY_ON_PAGE_LOAD);
+
+            var generateChartOptions = function(county, seriesData) {
+                return {
+                    chart: {
+                        type: 'bar'
+                    },
+
+                    title: {
+                        text: `Total Debris Collected in ${county} County by Year`
+                    },
+                    
+                    xAxis: {
+                        categories: seriesData.categories,
+                        title: "Year"
+                    },
+
+                    yAxis: {
+                        title: "Total Debris"
+                    },
+
+                    series: [{
+                        name: 'Total Debris',
+                        dashStyle: "Solid",
+                        data: seriesData.seriesData,
+                    }],
+                };
+            }
+
+            chart = Highcharts.chart('container3', generateChartOptions(DEFAULT_COUNTY_ON_PAGE_LOAD, seriesData));
+
+            $('.btn-county').click(function(e) {
+                var county = $(this).text();
+                //var county = e.target.id;
+                var seriesData = generateSeriesData(county);
+                chart = new Highcharts.Chart('container3', generateChartOptions(county, seriesData));
+            });
+        }
     });
 });
-
 
 </script>
 
