@@ -7,7 +7,6 @@ Created on 5/27/2015
 
 This starts flask dashboard.
 All the configs are in beach.config.py
-Bind to PORT if defined, otherwise default to 8080
 '''
 
 from beach import application

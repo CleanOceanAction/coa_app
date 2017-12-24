@@ -11,6 +11,8 @@ import os
 class Config(object):
     #Flask config
     TESTING = False
+    PORT = 80
+    DEBUG = True
 
     #DB config
     DB_SERVER = os.environ['DB_SERVER']
@@ -18,14 +20,3 @@ class Config(object):
     DB_PASSWORD = os.environ['DB_PASSWORD']
     DB_DATABASE = os.environ['DB_DATABASE']
     DB_PORT = int(os.environ['DB_PORT'])
-
-
-
-class ProdConfig(Config):
-    PORT = 80
-    DEBUG = True
-
-
-class DevConfig(Config):
-    PORT = 8080
-    DEBUG = True
