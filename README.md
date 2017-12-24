@@ -36,13 +36,18 @@ Using the semi-annual (Fall and Spring) trash data provided by COA, we analyzed 
 ## 5. Conclusion
 The development and implementation of the web application, as mentioned above, will serve four purposes. The first will allow our Bloomberg team to standardize the remaining historical years of data. Second, the application will allow volunteers and COA to standardize the data they are collecting and directly load this data into the database. As a result, future data will no longer need to undergo the time intensive process that was necessary for the historical data we received. Third, we see the application serving as a tool to increase volunteer engagement. Analytics on the web application are updated real time and allow an individual or team leader to visualize the impact they are making. Lastly, the analytics made available to the organization via the web application will allow COA to plan more efficiently from an operations standpoint. We see this application being used to properly allocate resources at the various beach sites and also to allow the organization to reflect on prior Beach Sweeps and strategies that may or may not have worked.
 
-# Development Setup 
-Thanks for volunteering to help with this project! To get started, you should have received an email with all the credentials you might need. If not, please reach out to the project co-ordinator.
+# Getting Started
+To get started, you should have received an email with all the credentials you might need. If not, please reach out to the project co-ordinator.
 
 ## Setup
-1. Install Python 2.7 or later. 
-2. Install [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)
-3. Install [Flask](http://flask.pocoo.org/docs/0.12/installation/)
-4. Clone this repo
-5. Change beach/config.py with hard coded credentials
-6. Run the application and check it runs by going to [this url](http://0.0.0.0:8080/impact)
+1. Install Python 2.7 or later and pip. Note that you may need to update your PATH environment variable to include the Python and pip paths. This can be downloaded [here](https://www.python.org/downloads/).
+2. Install [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/).
+3. Install [Flask](http://flask.pocoo.org/docs/0.12/installation/).
+4. Clone this repository.
+5. cd into the directory and install dependencies using:
+`pip -r requirements.txt`
+6. Change beach/config.py with hard coded credentials
+7. Run the application with:
+`python application.py`
+Note, you may need to run this with sudo.
+8. Check it runs by going to [this url](http://0.0.0.0:8080/impact)
