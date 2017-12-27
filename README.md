@@ -39,7 +39,7 @@ The development and implementation of the web application, as mentioned above, w
 # Getting Started
 To get started, you should have received an email with all the credentials you might need. If not, please reach out to the project co-ordinator.
 
-## Setup
+## Web Application Setup
 1. Install Python 2.7 or later and pip. Note that you may need to update your PATH environment variable to include the Python and pip paths. This can be downloaded [here](https://www.python.org/downloads/).
 2. Install [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/).
 3. Install [Flask](http://flask.pocoo.org/docs/0.12/installation/).
@@ -51,3 +51,9 @@ To get started, you should have received an email with all the credentials you m
 `python application.py`
 Note, you may need to run this with sudo.
 8. Check it runs by going to [this url](http://0.0.0.0:8080/impact)
+
+## Inspecting Databases
+1. Install MySQL Workbench [here](https://dev.mysql.com/downloads/workbench/)
+2. Once installed, open MySQL Workbench and click on 'MySQL Connections +' to add a connection with AWS RDS. 
+3. Enter the hostname, port, username and password using the same hard coded credentials used in the web app. At this point, you should be able to test the connection to confirm you have the correct credentials. 
+4. From the 'Home' view, you can click on the connection to inspect the database.
