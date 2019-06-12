@@ -1,88 +1,13 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-
-'''
-Created on 5/27/2015
-@author: iitoku2
-
-This module gets called from site.py, 
-sends query from SQL and returns data to display
-'''
-
 from flask import Blueprint, render_template, request, Response, redirect, url_for, send_from_directory,session
 import csv
 from beach import db
 from datetime import datetime
 
 
-cont = Blueprint('contribution', __name__, template_folder='/../templates')
-
-'''
-@cont.route('/', methods=['GET', 'POST'])
-def collected_items():
-    if request.method == 'GET':
-        title = "Please enter your contribution!"
-        sites = get_sites()
-        tls = get_tls()
-        trash_items = get_trash_items()
-        updater=''
-        eventcode=''
-        print "contribution"
-        print session
-        if 'updater' in session:
-            updater=session['updater']
-        if 'eventcode' in session:
-            eventcode=session['eventcode']
-        return render_template("contribution_input.html",
-                               title=title,
-                               sites=sites,
-                               tls=tls,
-                               trash_items=trash_items,
-                               updater=updater,
-                               eventcode=eventcode,
-                               active_page='contribution')
-
-    elif request.method == 'POST':
-        title = "Thank you for your contribution!"
-        return render_template("contribution_output.html",
-                               title=title,
-                               active_page='contribution')
-'''
-
-def get_leaderboard():
-    query = """
-    SELECT updated_by,count(*) as cnt
-    FROM coa.volunteer_info
-    where updated_by<>"" and event_code like "COA%"
-    group by updated_by order by count(*) desc
-    """
-    lb=db.fetch_data(query)
-    return lb
-
-@cont.route('/ajax')
-def ajax():
-    tls = get_tls()
-    return Response(tls)
-
-@cont.route('/admin')
-def admin():
-    sites = get_sites()
-    tls = get_tls()
-    return render_template("admin.html",
-                            sites=sites,
-                            tls=tls)
-@cont.route('/leaderboard')
-def leaderboard():
-    lb=get_leaderboard()
-    return render_template("leaderboard.html",
-                            lb=lb)
-
 @cont.route('/addSite')
 def addSite():
     if request.method == 'POST':
         sitename=request.form.items()[0][0]
-        #query='insert into site'
-        #db.insert(query)
         return ''
 
 @cont.route('/updatedb', methods=['GET', 'POST'])
