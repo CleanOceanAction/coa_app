@@ -21,8 +21,8 @@ def contribute(updater: str, eventcode: str):
 def index():
     need_to_login = not ('updater' in session and
                          'eventcode' in session and
-                         1 <= len(session['updater']) and
-                         1 <= len(session['eventcode']))
+                         session['updater'] and
+                         session['eventcode'])
     if need_to_login:
         return render_template('login.html')
 
@@ -36,7 +36,7 @@ def saveuserinfo():
     userinfo = request.form.items()[0][0].split('||')
     updater = userinfo[0]
     eventcode = userinfo[1]
-    if 1 <= len(updater) and 1 <= len(eventcode):
+    if updater and eventcode:
         session['updater'] = updater
         session['eventcode'] = eventcode
         return contribute(updater, eventcode)
