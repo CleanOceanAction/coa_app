@@ -2,6 +2,9 @@ dist: xenial
 
 language: python
 
+script:
+  - echo "Womp womp"
+
 deploy:
   provider: elasticbeanstalk
   access_key_id: $ACCESSKEYID
