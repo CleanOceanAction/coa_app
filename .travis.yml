@@ -13,6 +13,6 @@ deploy:
   region: "us-east-1"
   app: "COA"
   env: "coa-app"
-  bucket_name: "elasticbeanstalk-us-west-2-495512916465"
+  bucket_name: "coa-app"
   on:
     branch: master
