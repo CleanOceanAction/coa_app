@@ -1,0 +1,15 @@
+dist: xenial
+
+language: python
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $ACCESSKEYID
+  secret_access_key:
+    secure: $SECRETACCESSKEY
+  region: "us-east-1"
+  app: "COA"
+  env: "coa-app"
+  bucket_name: "coa-app"
+  on:
+    branch: master
